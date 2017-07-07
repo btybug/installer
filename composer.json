@@ -1,0 +1,20 @@
+{
+  "name": "sahak.avatar/avatar",
+  "description": "plugin system",
+  "type": "package",
+  "license": "Apach2",
+  "authors": [
+    {
+      "name": "Sahak Hakobyan",
+      "email": "hakobyan.sahak88@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "classmap": [
+    ],
+    "psr-4": {
+      "Avatar\\Avatar\\": "sahak.avatar/avatar"
+    }
+  }
+}
