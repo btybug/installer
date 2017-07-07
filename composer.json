@@ -14,7 +14,7 @@
     "classmap": [
     ],
     "psr-4": {
-      "Avatar\\Avatar\\": "sahak.avatar/avatar/src"
+      "Avatar\\Avatar\\": "src/"
     }
   }
 }
