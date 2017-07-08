@@ -6,7 +6,6 @@ namespace Avatar\Avatar\Providers;
 
 use App\helpers\EmailScHelper;
 use App\helpers\Tabs;
-use App\Modules\Users\User;
 use Blade;
 use File;
 use Illuminate\Support\ServiceProvider;
@@ -25,7 +24,9 @@ class AvatarServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'core_avatar');
+        $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'core_avatar');
+//dd(plugins_path('qaq'));
     }
 
 
@@ -38,6 +39,7 @@ class AvatarServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->register(RouteServiceProvider::class);
     }
 
 }

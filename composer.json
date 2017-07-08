@@ -9,11 +9,13 @@
       "email": "hakobyan.sahak88@gmail.com"
     }
   ],
-  "require": {},
+  "require": {
+    "composer/composer": "dev-master"
+  },
   "autoload": {
     "classmap": [
     ],
-    "psr-4": {
+    "psr-0": {
       "Avatar\\Avatar\\": "src/app/"
     }
   }
