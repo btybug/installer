@@ -9,8 +9,10 @@
 namespace Avatar\Avatar\Http\Controllers;
 
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Console\Tests\Input\StringInput;
 
 class IndexConroller extends Controller
 {
@@ -19,41 +21,90 @@ class IndexConroller extends Controller
         return view('core_avatar::index');
     }
 
-    public function composerUpdate()
+
+    public function getStatus()
     {
-        $process = new Process('./composer.phar dump-autoload -o');
-dd($process->start());
-        define('EXTRACT_DIRECTORY', "../var/extractedComposer");
+        $output = array(
+            'composer' => file_exists(__DIR__.'/../../../composer.phar'),
+            'composer_extracted' => file_exists(__DIR__.'/../../../composer/extracted'),
+            'installer' => file_exists(__DIR__.'/../../../installer.php'),
+        );
+      return \Response::json($output);
 
+    }
 
-        if (file_exists(EXTRACT_DIRECTORY.'/vendor/autoload.php') == true) {
-            echo "Extracted autoload already exists. Skipping phar extraction as presumably it's already extracted.";
+    public function getMain(Request $request)
+    {
+        $function=$request->get('function');
+        return call_user_func_array([$this, $function],[]);
+    }
+    public function downloadComposer()
+    {
+        $installerURL = 'https://getcomposer.org/installer';
+        $installerFile = __DIR__.'/../../../installer.php';
+        putenv('COMPOSER_HOME=' . __DIR__.'/../../../composer/extracted/bin/composer');
+        if (!file_exists($installerFile))
+        {
+
+            echo 'Downloading ' . $installerURL . PHP_EOL;
+            flush();
+            $ch = curl_init($installerURL);
+            curl_setopt($ch, CURLOPT_CAINFO, __DIR__.'/../../../composer/cacert.pem');
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+            curl_setopt($ch, CURLOPT_FILE, fopen($installerFile, 'w+'));
+            if (curl_exec($ch)){
+
+                return 'Success downloading ' . $installerURL . PHP_EOL;
+
+            }
+            else
+            {
+                return 'Error downloading ' . $installerURL . PHP_EOL;
+            }
+            flush();
         }
-        else{
-            $composerPhar = new \Phar("Composer.phar");
-            //php.ini setting phar.readonly must be set to 0
-            $composerPhar->extractTo(EXTRACT_DIRECTORY);
+        echo 'Installer found : ' . $installerFile . PHP_EOL.'\r\n'.'Starting installation...' . PHP_EOL;
+        flush();
+        $argv = array();
+        include $installerFile;
+        flush();
+    }
+    public function extractComposer()
+    {
+        if (file_exists(__DIR__.'/../../../composer.phar'))
+        {
+            echo 'Extracting composer.phar ...' . PHP_EOL;
+            flush();
+            $composer = new Phar(__DIR__.'/../../../composer.phar');
+            $composer->extractTo(__DIR__.'/../../../composer/extracted');
+            return 'Extraction complete.' . PHP_EOL;
         }
-//
-////This requires the phar to have been extracted successfully.
-//        require_once (EXTRACT_DIRECTORY.'/vendor/autoload.php');
+            return 'composer.phar does not exist';
+    }
+    public function command()
+    {
+        command:
+        set_time_limit(-1);
+        putenv('COMPOSER_HOME=' . __DIR__ . '/../../../extracted/bin/composer');
+        if(!file_exists($_POST['path']))
+        {
 
-////Use the Composer classes
-//    use Composer\Console\Application;
-//    use Composer\Command\UpdateCommand;
-//    use Symfony\Component\Console\Input\ArrayInput;
-//
-//// change out of the webroot so that the vendors file is not created in
-//// a place that will be visible to the intahwebz
-//        chdir('../');
-//
-////Create the commands
-//        $input = new ArrayInput(array('command' => 'update'));
-//
-////Create the application and run it with the commands
-//        $application = new Application();
-//        $application->run($input);
-
-        return redirect()->back()->with(['message' =>'<pre>'. $echo.'</pre>']);
+            echo $_POST['path'];
+            die();
+        }
+        if (file_exists( __DIR__.'/../../../composer/extracted'))
+        {
+            require_once(__DIR__.'/../../../composer/extracted/extracted/vendor/autoload.php');
+            $input = new \Symfony\Component\Console\Input\StringInput($_POST['command'].' -vvv -d '.$_POST['path']);
+            $output = new \Symfony\Component\Console\Output\StreamOutput(fopen('php://output','w'));
+            $app = new \Composer\Console\Application();
+            $app->run($input,$output);
+        }
+        else
+        {
+            echo 'Composer not extracted.';
+            $this->extractComposer();
+            goto command;
+        }
     }
 }

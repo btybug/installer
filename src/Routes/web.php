@@ -7,4 +7,5 @@
  */
 
 Route::get('/','IndexConroller@getIndex');
+Route::post('/main','IndexConroller@getMain');
 Route::get('/composer-update','IndexConroller@composerUpdate')->name('composer_update');
