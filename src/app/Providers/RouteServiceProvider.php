@@ -60,7 +60,8 @@ class RouteServiceProvider extends ServiceProvider
                 'prefix' => 'admin/avatar',
                 'namespace' => $this->namespace,
             ], function ($router) {
-                require base_path('vendor/sahak.avatar/avatar/src/Routes/web.php');
+                //TODO fix path when done
+                require base_path('avatar/src/Routes/web.php');
             });
         });
     }
