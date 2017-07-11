@@ -8,8 +8,6 @@
             <hr/>
             <h3>Commands:</h3>
             <div class="form-inline">
-                <button id="self-update" onclick="del()" class="btn btn-success disabled">Update Composer</button>
-                <br/><br/>
                 <input type="text" id="path" style="width:300px;" class="form-control disabled"
                        placeholder="" value="{!! base_path('app/ExtraModules') !!}"/>
                 <button id="install" onclick="call('install')" class="btn btn-success disabled">install</button>
