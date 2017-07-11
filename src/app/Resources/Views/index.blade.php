@@ -17,6 +17,12 @@
                 <button id="update" onclick="call('dump-autoload')" class="btn btn-success disabled">dump-autoload
                 </button>
             </div>
+            <div class="form-inline">
+                <br/><br/>
+                <input type="text" id="package" style="width:300px;" class="form-control disabled"
+                       placeholder="sahak.avatar/provaldation:dev-master" value=""/>
+                <button id="install" onclick="call('require')" class="btn btn-success disabled">Require plugin</button>
+            </div>
             <h3>Console Output:</h3>
             <pre id="output" class="well"></pre>
         </div>
@@ -29,7 +35,9 @@
             width: 100%;
             height: 350px;
             overflow-y: scroll;
-            overflow-x: hidden;
+            background: black;
+            color: darkturquoise;
+            font-family: monospace;
         }
     </style>
 @stop
@@ -49,6 +57,7 @@
             $.post('/admin/avatar/main',
                 {
                     "path": $("#path").val(),
+                    "package":$("#package").val(),
                     "command": func,
                     "function": "command",
                     "_token": "<?php echo csrf_token()?>"
