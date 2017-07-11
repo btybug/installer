@@ -26,7 +26,19 @@ class AvatarServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'core_avatar');
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'core_avatar');
-//dd(plugins_path('qaq'));
+        \Eventy::action('admin.menus', [
+            "title" => "Developer console",
+            "custom-link" => "#",
+            "icon" => "fa fa-folder-open",
+            "is_core" => "yes",
+            "main"=>true,
+            "children" => [[
+                "title" => "Composer",
+                "custom-link" => "/admin/avatar",
+                "icon" => "fa fa-angle-right",
+                "is_core" => "yes"
+            ]]
+        ]);
     }
 
 
