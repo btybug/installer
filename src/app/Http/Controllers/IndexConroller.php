@@ -80,7 +80,7 @@ class IndexConroller extends Controller
         }
         if (file_exists(__DIR__ . '/../../../composer/extracted')) {
             require_once(__DIR__ . '/../../../composer/extracted/extracted/vendor/autoload.php');
-            $input = new \Symfony\Component\Console\Input\StringInput($command . ' ' . $package . ' -vvv -d ' . $path);
+            $input = new \Symfony\Component\Console\Input\StringInput($command . ' ' . $package . ' -vvv -d ' . htmlentities($path));
             $output = new \Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
             $app = new \Composer\Console\Application();
             $app->run($input, $output);
