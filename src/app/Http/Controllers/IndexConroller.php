@@ -70,6 +70,7 @@ class IndexConroller extends Controller
     public function command($path, $package, $command)
     {
         if ($command !='require') $package = null;
+        $path=str_replace('\\','\\\\',$path);
         command:
         set_time_limit(-1);
         putenv('COMPOSER_HOME=' . __DIR__ . '/../../../extracted/bin/composer');
@@ -80,7 +81,7 @@ class IndexConroller extends Controller
         }
         if (file_exists(__DIR__ . '/../../../composer/extracted')) {
             require_once(__DIR__ . '/../../../composer/extracted/extracted/vendor/autoload.php');
-            $input = new \Symfony\Component\Console\Input\StringInput($command . ' ' . $package . ' -vvv -d ' . htmlentities($path));
+            $input = new \Symfony\Component\Console\Input\StringInput($command . ' ' . $package . ' -vvv -d ' . $path);
             $output = new \Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
             $app = new \Composer\Console\Application();
             $app->run($input, $output);
