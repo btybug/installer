@@ -69,10 +69,15 @@ class IndexConroller extends Controller
 
     public function command($path, $package, $command)
     {
-        if ($command !='require') $package = null;
+        switch ($command){
+            case 'remove':$package.=' --update-with-dependencies'; break;
+            case 'require': break;
+            default:$package = null;
+        }
         $path=str_replace('\\','\\\\',$path);
         command:
         set_time_limit(-1);
+
         putenv('COMPOSER_HOME=' . __DIR__ . '/../../../extracted/bin/composer');
         if (!file_exists($_POST['path'])) {
 

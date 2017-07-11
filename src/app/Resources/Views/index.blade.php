@@ -12,14 +12,16 @@
                        placeholder="" value="{!! base_path('app/ExtraModules') !!}"/>
                 <button id="install" onclick="call('install')" class="btn btn-success disabled">install</button>
                 <button id="update" onclick="call('update')" class="btn btn-success disabled">update</button>
-                <button id="update" onclick="call('dump-autoload')" class="btn btn-success disabled">dump-autoload
+                <button id="dump-autoload" onclick="call('dump-autoload')" class="btn btn-success disabled">dump-autoload
                 </button>
             </div>
             <div class="form-inline">
                 <br/><br/>
                 <input type="text" id="package" style="width:300px;" class="form-control disabled"
                        placeholder="sahak.avatar/provaldation:dev-master" value=""/>
-                <button id="install" onclick="call('require')" class="btn btn-success disabled">Require plugin</button>
+                <button id="require" onclick="call('require')" class="btn btn-success disabled">Require plugin</button>
+                <button id="remove" onclick="call('remove')" class="btn btn-success disabled">Delete plugin</button>
+
             </div>
             <h3>Console Output:</h3>
             <pre id="output" class="well"></pre>
