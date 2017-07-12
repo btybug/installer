@@ -11,13 +11,14 @@
             </h3>
             <hr>
             <ul class="list-unstyled menuList" id="components-list">
-
-
+                @foreach($plugins as $plugin)
                         <li class="active">
-                            <a href="{!! url('#') !!}"> <span class="module_icon"></span> {!! 'Plugin Name' !!}</a>
+                            <a href="{!! route('avatar_index',['p'=>$plugin['name']]) !!}"> <span class="module_icon"></span> {!! $plugin['name'] !!}</a>
                         </li>
+                @endforeach
             </ul>
         </div>
+
         <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
             <div class="row">
                 <div class="col-xs-12">
@@ -33,16 +34,16 @@
                         <div class="col-xs-6">
                         </div>
                     </div>
-
+                    @if($selected)
                     <div class="row module_detail">
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                             <img src="{!! url('resources/assets/images/module.jpg') !!}" alt=""
                                  class="img-rounded img-responsive"/>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="module-title">{!! 'Plugin name' !!}</div>
+                            <div class="module-title"> {!! $selected['name'] or null !!}</div>
                             <div class="module-desc">
-                                {!! 'Description' !!}
+                                {!! $selected['description'] or null !!}
                             </div>
 
                         </div>
@@ -74,6 +75,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                 </div>
 

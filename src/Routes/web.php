@@ -6,7 +6,7 @@
  * Time: 10:19 PM
  */
 
-Route::get('/','IndexConroller@getIndex');
+Route::get('/','IndexConroller@getIndex')->name('avatar_index');
 
 Route::group(['prefix'=>'composer'],function ($router){
     Route::get('/','ComposerController@getIndex')->name('composer_index');
