@@ -30,6 +30,19 @@
 
                             </a>
                         </div>
+                        <div class="col-md-7">
+                            <p>
+                                {{--@if($module->enabled)--}}
+                                <a href="#" namespace="{!! 'slug' !!}" data-action="disable"
+                                   class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left enb-disb deactivate"><i
+                                            class="fa fa-power-off f-s-14 m-r-10"></i> Deactivate</a>
+                                {{--@else--}}
+                                <a href="#" namespace="{!! 'slug' !!}" data-action="core-enable" style="background: #7fff00;color: #000000"
+                                   class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left  enb-disb"><i
+                                            class="fa fa-plug f-s-14 m-r-10"></i>Activate</a>
+                                {{--@endif--}}
+                            </p>
+                        </div>
 
                         <div class="col-xs-6">
                         </div>
@@ -103,6 +116,7 @@
             </div>
 
         </div>
+
     </div>
 
 @stop
