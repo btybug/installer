@@ -1,382 +1,111 @@
 @extends('layouts.admin')
 @section('content')
-
     <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10">
-            <h1>Avatar Composer</h1>
-            <hr/>
-            <h3>Commands:</h3>
-            <div class="form-inline">
-                <input type="text" id="path" style="width:300px;" class="form-control disabled"
-                       placeholder="" value="{!! base_path('app/ExtraModules') !!}"/>
-                <button id="install" onclick="call('install')" class="btn btn-success disabled">install</button>
-                <button id="update" onclick="call('update')" class="btn btn-success disabled">update</button>
-                <button id="dump-autoload" onclick="call('dump-autoload')" class="btn btn-success disabled">dump-autoload
-                </button>
-            </div>
-            <div class="form-inline">
-                <br/><br/>
-                <input type="text" id="package" style="width:300px;" class="form-control disabled"
-                       placeholder="sahak.avatar/provaldation:dev-master" value=""/>
-                <button id="require" onclick="call('require')" class="btn btn-success disabled">Require plugin</button>
-                <button id="remove" onclick="call('remove')" class="btn btn-success disabled">Delete plugin</button>
 
-            </div>
-            <h3>Console Output:</h3>
-            <pre id="output" class="well"></pre>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 cms_module_list">
+            <h3 class="menuText f-s-17">
+                <span class="module_icon_main"></span>
+                <span class="module_icon_main_text">
+                    {!! Form::select('type',['extra' => 'Extra Modules','core' => 'Core Modules'],[],['class' => 'form-control select-modules']) !!}
+                </span>
+            </h3>
+            <hr>
+            <ul class="list-unstyled menuList" id="components-list">
+
+
+                        <li class="active">
+                            <a href="{!! url('#') !!}"> <span class="module_icon"></span> {!! 'Plugin Name' !!}</a>
+                        </li>
+            </ul>
         </div>
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <a class="btn btn-sm  m-b-10 upload_module" href="{!! route('composer_index') !!}">
+                                <i class="fa fa-steam-square" aria-hidden="true"></i>
+                                <span class="upload_module_text">Installer</span>
 
-        <div class="col-lg-1"></div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6">
+                        </div>
+                    </div>
+
+                    <div class="row module_detail">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <img src="{!! url('resources/assets/images/module.jpg') !!}" alt=""
+                                 class="img-rounded img-responsive"/>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="module-title">{!! 'Plugin name' !!}</div>
+                            <div class="module-desc">
+                                {!! 'Description' !!}
+                            </div>
+
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 pull-right text-right m-t-20">
+                            {{--@if(isset($module->have_setting) and $module->have_setting==1)--}}
+                                <a href="{!! url('#/setting','id') !!}"
+                                   class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left settings"><i
+                                            class="fa fa-pencil f-s-14 m-r-10"></i> Settings</a>
+                            {{--@endif--}}
+                            <a href="{!! url('#config') !!}"
+                               class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left"><i
+                                        class="fa fa-cogs f-s-14 m-r-10"></i> Config</a>
+                        </div>
+                    </div>
+
+                    <div class="row module_detail_link">
+                        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 m-t-10 m-b-10">
+                            <a href="{!! 'Author' !!}"
+                               class="module_detail_author_link">{!!'Site Url' !!}</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 module_author_detail m-t-10 m-b-10">
+                            <div class="pull-left">
+                                <i class="fa fa-bars f-s-15" aria-hidden="true"></i>
+                                Version {!! 'version' !!}
+                            </div>
+                            <div class="pull-right">
+                                <i class="fa fa-user f-s-15" aria-hidden="true"></i>
+                                {!! 'Author'!!}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="m-t-15 col-xs-12">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#installed_add_ons"
+                                                                  aria-controls="installed_add_ons" role="tab"
+                                                                  data-toggle="tab">Installed Plugins</a></li>
+                        <li role="presentation"><a href="#related_add_ons" aria-controls="related_add_ons" role="tab"
+                                                   data-toggle="tab">Related Add-Ons</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content m-t-15">
+                        <div role="tabpanel" class="tab-pane active" id="installed_add_ons">
+                            {{--@include("console::modules.plugins")--}}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="related_add_ons">...cc</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="bookshelf_wrapper hidden">
-        <ul class="books_list">
-            <li class="book_item first"></li>
-            <li class="book_item second"></li>
-            <li class="book_item third"></li>
-            <li class="book_item fourth"></li>
-            <li class="book_item fifth"></li>
-            <li class="book_item sixth"></li>
-        </ul>
-        <div class="shelf"></div>
-    </div>
+
 @stop
 @section('CSS')
-    <style>
-        #output {
-            width: 100%;
-            height: 350px;
-            overflow-y: scroll;
-            background: black;
-            color: darkturquoise;
-            font-family: monospace;
-        }
-    </style>
-   <style>
-       body {
-           margin: 0;
-       }
-
-       .bookshelf_wrapper {
-           position: relative;
-           top: 60%;
-           left: 50%;
-           transform: translate(-50%, -50%);
-       }
-
-       .books_list {
-           margin: 0 auto;
-           width: 300px;
-           padding: 0;
-       }
-
-       .book_item {
-           position: absolute;
-           top: -120px;
-           box-sizing: border-box;
-           list-style: none;
-           width: 40px;
-           height: 120px;
-           opacity: 0;
-           background-color: #f9f6ff;
-           border: 5px solid #4948fa;
-           transform-origin: bottom left;
-           transform: translateX(300px);
-           animation: travel 2500ms linear infinite;
-       }
-
-       .book_item.first {
-           top: -140px;
-           height: 140px;
-       }
-
-       .book_item.first:before, .book_item.first:after {
-           content: '';
-           position: absolute;
-           top: 10px;
-           left: 0;
-           width: 100%;
-           height: 5px;
-           background-color: #4948fa;
-       }
-
-       .book_item.first:after {
-           top: initial;
-           bottom: 10px;
-       }
-
-       .book_item.second:before, .book_item.second:after, .book_item.fifth:before, .book_item.fifth:after {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           top: 10px;
-           left: 0;
-           width: 100%;
-           height: 17.5px;
-           border-top: 5px solid #4948fa;
-           border-bottom: 5px solid #4948fa;
-       }
-
-       .book_item.second:after, .book_item.fifth:after {
-           top: initial;
-           bottom: 10px;
-       }
-
-       .book_item.third:before, .book_item.third:after {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           top: 10px;
-           left: 9px;
-           width: 12px;
-           height: 12px;
-           border-radius: 50%;
-           border: 5px solid #4948fa;
-       }
-
-       .book_item.third:after {
-           top: initial;
-           bottom: 10px;
-       }
-
-       .book_item.fourth {
-           top: -130px;
-           height: 130px;
-       }
-
-       .book_item.fourth:before {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           top: 46px;
-           left: 0;
-           width: 100%;
-           height: 17.5px;
-           border-top: 5px solid #4948fa;
-           border-bottom: 5px solid #4948fa;
-       }
-
-       .book_item.fifth {
-           top: -100px;
-           height: 100px;
-       }
-
-       .book_item.sixth {
-           top: -140px;
-           height: 140px;
-       }
-
-       .book_item.sixth:before {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           bottom: 31px;
-           left: 0px;
-           width: 100%;
-           height: 5px;
-           background-color: #4948fa;
-       }
-
-       .book_item.sixth:after {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           bottom: 10px;
-           left: 9px;
-           width: 12px;
-           height: 12px;
-           border-radius: 50%;
-           border: 5px solid #4948fa;
-       }
-
-       .book_item:nth-child(2) {
-           animation-delay: 416.66667ms;
-       }
-
-       .book_item:nth-child(3) {
-           animation-delay: 833.33333ms;
-       }
-
-       .book_item:nth-child(4) {
-           animation-delay: 1250ms;
-       }
-
-       .book_item:nth-child(5) {
-           animation-delay: 1666.66667ms;
-       }
-
-       .book_item:nth-child(6) {
-           animation-delay: 2083.33333ms;
-       }
-
-       .shelf {
-           width: 300px;
-           height: 5px;
-           margin: 0 auto;
-           background-color: #4948fa;
-           position: relative;
-       }
-
-       .shelf:before, .shelf:after {
-           content: '';
-           position: absolute;
-           width: 100%;
-           height: 100%;
-           background: #1e6cc7;
-           background-image: radial-gradient(rgba(255, 255, 255, 0.5) 30%, transparent 0);
-           background-size: 10px 10px;
-           background-position: 0 -2.5px;
-           top: 200%;
-           left: 5%;
-           animation: move 250ms linear infinite;
-       }
-
-       .shelf:after {
-           top: 400%;
-           left: 7.5%;
-       }
-
-       @keyframes move {
-           from {
-               background-position-x: 0;
-           }
-
-           to {
-               background-position-x: 10px;
-           }
-       }
-
-       @keyframes travel {
-           0% {
-               opacity: 0;
-               transform: translateX(300px) rotateZ(0deg) scaleY(1);
-           }
-
-           6.5% {
-               transform: translateX(279.5px) rotateZ(0deg) scaleY(1.1);
-           }
-
-           8.8% {
-               transform: translateX(273.6px) rotateZ(0deg) scaleY(1);
-           }
-
-           10% {
-               opacity: 1;
-               transform: translateX(270px) rotateZ(0deg);
-           }
-
-           17.6% {
-               transform: translateX(247.2px) rotateZ(-30deg);
-           }
-
-           45% {
-               transform: translateX(165px) rotateZ(-30deg);
-           }
-
-           49.5% {
-               transform: translateX(151.5px) rotateZ(-45deg);
-           }
-
-           61.5% {
-               transform: translateX(115.5px) rotateZ(-45deg);
-           }
-
-           67% {
-               transform: translateX(99px) rotateZ(-60deg);
-           }
-
-           76% {
-               transform: translateX(72px) rotateZ(-60deg);
-           }
-
-           83.5% {
-               opacity: 1;
-               transform: translateX(49.5px) rotateZ(-90deg);
-           }
-
-           90% {
-               opacity: 0;
-           }
-
-           100% {
-               opacity: 0;
-               transform: translateX(0px) rotateZ(-90deg);
-           }
-       }
-   </style>
+    {!! HTML::style('app/Modules/Modules/Resources/assets/css/new-store.css') !!}
 @stop
 @section('JS')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            check();
-        });
-        function url() {
-            return '/admin/avatar/main';
-        }
-        function call(func) {
-            $(".bookshelf_wrapper").removeClass("hidden");
-            $("#output").append("\nplease wait...\n");
-            $("#output").append("\n===================================================================\n");
-            $("#output").append("Executing Started");
-            $("#output").append("\n===================================================================\n");
-            $.post('/admin/avatar/main',
-                {
-                    "path": $("#path").val(),
-                    "package":$("#package").val(),
-                    "command": func,
-                    "function": "command",
-                    "_token": "<?php echo csrf_token()?>"
-
-                },
-                function (data) {
-                    $("#output").append(data);
-                    $("#output").append("\n===================================================================\n");
-                    $("#output").append("Execution Ended");
-                    $("#output").append("\n===================================================================\n");
-                    $(".bookshelf_wrapper").addClass("hidden");
-
-                }
-            );
-        }
-        function check() {
-            $("#output").append('\nloading...\n');
-            $.post(url(),
-                {
-                    "function": "getStatus",
-                    "password": $("#password").val(),
-                    "_token": "<?php echo csrf_token()?>"
-                },
-                function (data) {
-                    if (data.composer_extracted) {
-                        $("#output").html("Ready. All commands are available.\n");
-                        $("button").removeClass('disabled');
-                    }
-                    else if (data.composer) {
-                        $.post(url(),
-                            {
-                                "password": $("#password").val(),
-                                "function": "extractComposer",
-                                "_token": "<?php echo csrf_token()?>"
-                            },
-                            function (data) {
-                                $("#output").append(data);
-                                window.location.reload();
-                            }, 'text');
-                    }
-                    else {
-                        $("#output").html("Please wait till composer is being installed...\n");
-                        $.post(url(),
-                            {
-                                "password": $("#password").val(),
-                                "function": "downloadComposer",
-                                "_token": "<?php echo csrf_token()?>"
-                            },
-                            function (data) {
-                                $("#output").append(data);
-//                                check();
-                            }, 'text');
-                    }
-                });
-        }
-    </script>
 @stop

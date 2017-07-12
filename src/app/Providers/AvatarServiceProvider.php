@@ -33,8 +33,8 @@ class AvatarServiceProvider extends ServiceProvider
             "is_core" => "yes",
             "main"=>true,
             "children" => [[
-                "title" => "Composer",
-                "custom-link" => "/admin/avatar",
+                "title" => "Plugins",
+                "custom-link" => '/admin/avatar',
                 "icon" => "fa fa-angle-right",
                 "is_core" => "yes"
             ]]

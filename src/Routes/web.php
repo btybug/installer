@@ -7,5 +7,11 @@
  */
 
 Route::get('/','IndexConroller@getIndex');
-Route::post('/main','IndexConroller@getMain');
-Route::get('/composer-update','IndexConroller@composerUpdate')->name('composer_update');
+
+Route::group(['prefix'=>'composer'],function ($router){
+    Route::get('/','ComposerController@getIndex')->name('composer_index');
+    Route::post('/main','ComposerController@getMain')->name('composer_main');
+});
+
+
+
