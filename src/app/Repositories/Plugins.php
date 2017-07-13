@@ -24,7 +24,7 @@ class Plugins
 
     private function sortPlugins()
     {
-        $plugins = $this->mainComposer['require-dev'];
+        $plugins = isset($this->mainComposer['require-dev'])?$this->mainComposer['require-dev']:[];
         unset($plugins['php']);
         return $plugins;
     }
@@ -33,6 +33,7 @@ class Plugins
     {
         $plugins = [];
         foreach ($this->plugins as $pluginPath => $version) {
+            if (\File::exists($this->pluginPath($pluginPath)))
             $plugins[$pluginPath] = json_decode(\File::get($this->pluginPath($pluginPath)), true);
         }
         return collect($plugins);
@@ -108,5 +109,23 @@ class Plugins
         if(\File::exists(storage_path('packagis.txt'))){
             return json_decode(\File::get(storage_path('packagis.txt')),true);
         }
+    }
+
+    public function composerRequireDev($package)
+    {
+        $plugin=explode(':',$package);
+        $this->mainComposer['require-dev'][$plugin[0]]=$plugin[1];
+        \File::put(plugins_path('composer.json'),json_encode($this->mainComposer,true));
+        return $this->command('update --dev --no-interaction');
+    }
+    public function composerRemoveDev($package)
+    {
+        if(!isset($this->mainComposer['require-dev'][$package])){
+            echo 'Warning wrong package name!!!';
+            exit;
+        }
+        unset($this->mainComposer['require-dev'][$package]);
+        \File::put(plugins_path('composer.json'),json_encode($this->mainComposer));
+        return $this->command('update --dev --no-interaction');
     }
 }
