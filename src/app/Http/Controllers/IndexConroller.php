@@ -22,6 +22,7 @@ class IndexConroller extends Controller
         $selected=null;
         $packages = new Plugins();
         $plugins = $packages->getPlugins();
+
         if ($request->p && isset($plugins[$request->p])) {
             $selected = $plugins[$request->p];
         } elseif ($request->p && !isset($plugins[$request->p])) {
@@ -32,7 +33,14 @@ class IndexConroller extends Controller
                 continue;
             }
         }
-        return view('core_avatar::index', compact('plugins', 'selected'));
+
+        $storage=$packages->getStorage();
+        $enabled=true;
+        if(isset($selected['name']) && isset($storage[$selected['name']])){
+            $enabled=false;
+        }
+
+        return view('core_avatar::index', compact('plugins', 'selected','enabled'));
     }
 
 }

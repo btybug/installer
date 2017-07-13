@@ -56,27 +56,51 @@ class Plugins
 
     public function enable($pluginPath)
     {
-        $plugins=$this->getPlugins();
-        $plugin=$plugins[$pluginPath];
+        $plugins=$this->getInstaleds();
+        foreach ($plugins as $key=>$plugin){
+            if($plugin['name']==$pluginPath){
+//                $plugin=$plugins[$pluginPath];
+                $store=$this->getStorage();
+                $plugins[$key]['autoload']=$store[$pluginPath];
+                unset($store[$pluginPath]);
+                $this->addStorage($store);
+                $this->setInstaleds($plugins);continue;
 
-        $store=$this->getStorage();
-        $plugin['autoload']=$store[$pluginPath];
-        unset($store[$pluginPath]);
-        $this->addStorage($store);
-        \File::put($this->pluginPath($pluginPath),json_encode($plugin,true));
-       return $this->command('dump-autoload');
+            }
+        }
+        return $this->command('dump-autoload');
+
     }
 
     public function disable($pluginPath)
     {
-        $plugins=$this->getPlugins();
-        $plugin=$plugins[$pluginPath];
-        $store=$this->getStorage();
-        $store[$pluginPath]=$plugin['autoload'];
-        $this->addStorage($store);
-        unset($plugin['autoload']);
-        \File::put($this->pluginPath($pluginPath),json_encode($plugin,true));
+        $plugins=$this->getInstaleds();
+        foreach ($plugins as $key=>$plugin){
+            if($plugin['name']==$pluginPath){
+//                $plugin=$plugins[$pluginPath];
+                $store=$this->getStorage();
+                $store[$pluginPath]=$plugin['autoload'];
+                $this->addStorage($store);
+                unset($plugins[$key]['autoload']);
+                $this->setInstaleds($plugins);
+               continue;
+            }
+        }
         return $this->command('dump-autoload');
+    }
+
+    public function getInstaleds()
+    {
+        if(\File::exists(plugins_path('vendor'.DS.'composer'.DS.'installed.json'))){
+            return json_decode(\File::get(plugins_path('vendor'.DS.'composer'.DS.'installed.json')), true);
+        }
+
+    }
+    public function setInstaleds($data)
+    {
+        if(\File::exists(plugins_path('vendor'.DS.'composer'.DS.'installed.json'))){
+            return \File::put(plugins_path('vendor'.DS.'composer'.DS.'installed.json'),json_encode($data,true));
+        }
 
     }
 

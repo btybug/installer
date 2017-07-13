@@ -35,7 +35,7 @@
 
                         <div class="col-md-7">
                             <p>
-                                @if(isset($selected['autoload']))
+                                @if($enabled)
                                 <a href="#" namespace="{!! $selected['name'] or null !!}" data-action="off"
                                    class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left enb-disb deactivate"><i
                                             class="fa fa-power-off f-s-14 m-r-10"></i> Deactivate</a>

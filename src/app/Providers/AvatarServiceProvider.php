@@ -4,6 +4,7 @@ namespace Avatar\Avatar\Providers;
 
 //use TorMorten\Eventy;
 
+use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -33,8 +34,10 @@ class AvatarServiceProvider extends ServiceProvider
                 "is_core" => "yes"
             ]]
         ]);
-        if(isset($_SESSION['pluginProviders'])){
-            foreach ($_SESSION['pluginProviders'] as $namespace=>$options){
+        global $_PLUGIN_PROVIDERS;
+//        dd($_PLUGIN_PROVIDERS);
+        if(isset($_PLUGIN_PROVIDERS['pluginProviders'])){
+            foreach ($_PLUGIN_PROVIDERS['pluginProviders'] as $namespace=>$options){
                 $this->app->register($namespace,$options['options'],$options['force']);
             }
         }

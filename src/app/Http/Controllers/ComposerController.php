@@ -13,6 +13,8 @@ class ComposerController extends Controller
 {
     public function getIndex()
     {
+        $qaq=new Plugins();
+        dd($qaq->getInstaleds());
         return view('core_avatar::Composer.index');
     }
 
@@ -83,6 +85,7 @@ class ComposerController extends Controller
         $path = str_replace('\\', '\\\\', $path);
         command:
         set_time_limit(-1);
+        ini_set('memory_limit', '2048M');
         putenv('COMPOSER_HOME=' . __DIR__ . '/../../../extracted/bin/composer');
         if (!file_exists($_POST['path'])) {
 
