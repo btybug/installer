@@ -71,6 +71,9 @@ class ComposerController extends Controller
                 break;
             case 'require':
                 break;
+            case 'install':
+                $package=' --no-interaction';
+                break;
             default:
                 $package = null;
         }
