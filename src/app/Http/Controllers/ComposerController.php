@@ -67,12 +67,13 @@ class ComposerController extends Controller
     {
         switch ($command) {
             case 'remove':
-                $package .= ' --update-with-dependencies';
+                $package .= ' --update-with-dependencies';$command='--dev '.$command;
                 break;
             case 'require':
+                $command.=' --no-interaction';$command='--dev '.$command;
                 break;
             case 'install':
-                $package=' --no-interaction';
+                $package=' --dev';
                 break;
             default:
                 $package = null;

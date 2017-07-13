@@ -24,7 +24,7 @@ class Plugins
 
     private function sortPlugins()
     {
-        $plugins = $this->mainComposer['require'];
+        $plugins = $this->mainComposer['require-dev'];
         unset($plugins['php']);
         return $plugins;
     }
