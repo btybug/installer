@@ -33,6 +33,11 @@ class AvatarServiceProvider extends ServiceProvider
                 "is_core" => "yes"
             ]]
         ]);
+        if(isset($_SESSION['pluginProviders'])){
+            foreach ($_SESSION['pluginProviders'] as $namespace=>$options){
+                $this->app->register($namespace,$options['options'],$options['force']);
+            }
+        }
 
     }
 
