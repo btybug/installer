@@ -76,7 +76,7 @@ class ComposerController extends Controller
         $path = str_replace('\\', '\\\\', $path);
         command:
         set_time_limit(-1);
-
+        ini_set('allow_url_fopen',true);
         putenv('COMPOSER_HOME=' . __DIR__ . '/../../../extracted/bin/composer');
         if (!file_exists($_POST['path'])) {
 

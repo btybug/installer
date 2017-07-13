@@ -42,4 +42,32 @@ class Plugins
     {
         return plugins_path('vendor/' . $plugin . '/composer.json');
     }
+
+    public function enable($plugin)
+    {
+
+    }
+
+    public function disable($plugin)
+    {
+
+    }
+
+    public function command($command)
+    {
+        $path = str_replace('\\', '\\\\', plugins_path());
+        set_time_limit(-1);
+        putenv('COMPOSER_HOME=' . __DIR__ . '/../../extracted/bin/composer');
+        if (!file_exists($path)) {
+            return false;
+        }
+        if (file_exists(__DIR__ . '/../../composer/extracted')) {
+            require_once(__DIR__ . '/../../composer/extracted/extracted/vendor/autoload.php');
+            $input = new \Symfony\Component\Console\Input\StringInput($command . ' ' . $package . ' -vvv -d ' . $path);
+            $output = new \Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
+            $app = new \Composer\Console\Application();
+            return $app->run($input, $output);
+        }
+        return false;
+    }
 }

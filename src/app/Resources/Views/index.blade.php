@@ -126,4 +126,29 @@
     {!! HTML::style('app/Modules/Modules/Resources/assets/css/new-store.css') !!}
 @stop
 @section('JS')
+    <script>
+        $(function () {
+            $('body').on('click', '.enb-disb', function () {
+                var namespace = $(this).attr('namespace');
+                var action=$(this).attr('data-action');
+                $.ajax({
+                    url: '/admin/modules/'+action,
+                    data: {
+                        namespace: namespace,
+                        _token:  $('input[name=_token]').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data.error) {
+                            location.reload();
+                        } else {
+                            $('#message-modal .modal-body').html(data.message);
+                            $('#message-modal').modal();
+                        }
+                    },
+                    type: 'POST'
+                });
+            });
+        })
+    </script>
 @stop
