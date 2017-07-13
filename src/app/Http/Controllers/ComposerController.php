@@ -1,4 +1,5 @@
 <?php
+
 namespace Avatar\Avatar\Http\Controllers;
 
 
@@ -63,12 +64,16 @@ class ComposerController extends Controller
 
     public function command($path, $package, $command)
     {
-        switch ($command){
-            case 'remove':$package.=' --update-with-dependencies'; break;
-            case 'require': break;
-            default:$package = null;
+        switch ($command) {
+            case 'remove':
+                $package .= ' --update-with-dependencies';
+                break;
+            case 'require':
+                break;
+            default:
+                $package = null;
         }
-        $path=str_replace('\\','\\\\',$path);
+        $path = str_replace('\\', '\\\\', $path);
         command:
         set_time_limit(-1);
 

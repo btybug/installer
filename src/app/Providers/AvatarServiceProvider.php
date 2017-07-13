@@ -4,17 +4,11 @@ namespace Avatar\Avatar\Providers;
 
 //use TorMorten\Eventy;
 
-use App\helpers\EmailScHelper;
-use App\helpers\Tabs;
-use Blade;
-use File;
 use Illuminate\Support\ServiceProvider;
-use View;
 
 
 class AvatarServiceProvider extends ServiceProvider
 {
-
 
 
     /**
@@ -24,14 +18,14 @@ class AvatarServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'core_avatar');
-        $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'core_avatar');
+        $this->loadTranslationsFrom(__DIR__ . '/../Resources/Lang', 'core_avatar');
+        $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'core_avatar');
         \Eventy::action('admin.menus', [
             "title" => "Developer console",
             "custom-link" => "#",
             "icon" => "fa fa-folder-open",
             "is_core" => "yes",
-            "main"=>true,
+            "main" => true,
             "children" => [[
                 "title" => "Plugins",
                 "custom-link" => '/admin/avatar',
@@ -40,7 +34,6 @@ class AvatarServiceProvider extends ServiceProvider
             ]]
         ]);
     }
-
 
 
     /**

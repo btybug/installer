@@ -12,7 +12,8 @@
                        placeholder="" value="{!! base_path('app/ExtraModules') !!}"/>
                 <button id="install" onclick="call('install')" class="btn btn-success disabled">install</button>
                 <button id="update" onclick="call('update')" class="btn btn-success disabled">update</button>
-                <button id="dump-autoload" onclick="call('dump-autoload')" class="btn btn-success disabled">dump-autoload
+                <button id="dump-autoload" onclick="call('dump-autoload')" class="btn btn-success disabled">
+                    dump-autoload
                 </button>
             </div>
             <div class="form-inline">
@@ -52,258 +53,258 @@
             font-family: monospace;
         }
     </style>
-   <style>
-       body {
-           margin: 0;
-       }
+    <style>
+        body {
+            margin: 0;
+        }
 
-       .bookshelf_wrapper {
-           position: relative;
-           top: 60%;
-           left: 50%;
-           transform: translate(-50%, -50%);
-       }
+        .bookshelf_wrapper {
+            position: relative;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-       .books_list {
-           margin: 0 auto;
-           width: 300px;
-           padding: 0;
-       }
+        .books_list {
+            margin: 0 auto;
+            width: 300px;
+            padding: 0;
+        }
 
-       .book_item {
-           position: absolute;
-           top: -120px;
-           box-sizing: border-box;
-           list-style: none;
-           width: 40px;
-           height: 120px;
-           opacity: 0;
-           background-color: #f9f6ff;
-           border: 5px solid #4948fa;
-           transform-origin: bottom left;
-           transform: translateX(300px);
-           animation: travel 2500ms linear infinite;
-       }
+        .book_item {
+            position: absolute;
+            top: -120px;
+            box-sizing: border-box;
+            list-style: none;
+            width: 40px;
+            height: 120px;
+            opacity: 0;
+            background-color: #f9f6ff;
+            border: 5px solid #4948fa;
+            transform-origin: bottom left;
+            transform: translateX(300px);
+            animation: travel 2500ms linear infinite;
+        }
 
-       .book_item.first {
-           top: -140px;
-           height: 140px;
-       }
+        .book_item.first {
+            top: -140px;
+            height: 140px;
+        }
 
-       .book_item.first:before, .book_item.first:after {
-           content: '';
-           position: absolute;
-           top: 10px;
-           left: 0;
-           width: 100%;
-           height: 5px;
-           background-color: #4948fa;
-       }
+        .book_item.first:before, .book_item.first:after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #4948fa;
+        }
 
-       .book_item.first:after {
-           top: initial;
-           bottom: 10px;
-       }
+        .book_item.first:after {
+            top: initial;
+            bottom: 10px;
+        }
 
-       .book_item.second:before, .book_item.second:after, .book_item.fifth:before, .book_item.fifth:after {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           top: 10px;
-           left: 0;
-           width: 100%;
-           height: 17.5px;
-           border-top: 5px solid #4948fa;
-           border-bottom: 5px solid #4948fa;
-       }
+        .book_item.second:before, .book_item.second:after, .book_item.fifth:before, .book_item.fifth:after {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            height: 17.5px;
+            border-top: 5px solid #4948fa;
+            border-bottom: 5px solid #4948fa;
+        }
 
-       .book_item.second:after, .book_item.fifth:after {
-           top: initial;
-           bottom: 10px;
-       }
+        .book_item.second:after, .book_item.fifth:after {
+            top: initial;
+            bottom: 10px;
+        }
 
-       .book_item.third:before, .book_item.third:after {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           top: 10px;
-           left: 9px;
-           width: 12px;
-           height: 12px;
-           border-radius: 50%;
-           border: 5px solid #4948fa;
-       }
+        .book_item.third:before, .book_item.third:after {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 9px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 5px solid #4948fa;
+        }
 
-       .book_item.third:after {
-           top: initial;
-           bottom: 10px;
-       }
+        .book_item.third:after {
+            top: initial;
+            bottom: 10px;
+        }
 
-       .book_item.fourth {
-           top: -130px;
-           height: 130px;
-       }
+        .book_item.fourth {
+            top: -130px;
+            height: 130px;
+        }
 
-       .book_item.fourth:before {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           top: 46px;
-           left: 0;
-           width: 100%;
-           height: 17.5px;
-           border-top: 5px solid #4948fa;
-           border-bottom: 5px solid #4948fa;
-       }
+        .book_item.fourth:before {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            top: 46px;
+            left: 0;
+            width: 100%;
+            height: 17.5px;
+            border-top: 5px solid #4948fa;
+            border-bottom: 5px solid #4948fa;
+        }
 
-       .book_item.fifth {
-           top: -100px;
-           height: 100px;
-       }
+        .book_item.fifth {
+            top: -100px;
+            height: 100px;
+        }
 
-       .book_item.sixth {
-           top: -140px;
-           height: 140px;
-       }
+        .book_item.sixth {
+            top: -140px;
+            height: 140px;
+        }
 
-       .book_item.sixth:before {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           bottom: 31px;
-           left: 0px;
-           width: 100%;
-           height: 5px;
-           background-color: #4948fa;
-       }
+        .book_item.sixth:before {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            bottom: 31px;
+            left: 0px;
+            width: 100%;
+            height: 5px;
+            background-color: #4948fa;
+        }
 
-       .book_item.sixth:after {
-           box-sizing: border-box;
-           content: '';
-           position: absolute;
-           bottom: 10px;
-           left: 9px;
-           width: 12px;
-           height: 12px;
-           border-radius: 50%;
-           border: 5px solid #4948fa;
-       }
+        .book_item.sixth:after {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 9px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 5px solid #4948fa;
+        }
 
-       .book_item:nth-child(2) {
-           animation-delay: 416.66667ms;
-       }
+        .book_item:nth-child(2) {
+            animation-delay: 416.66667ms;
+        }
 
-       .book_item:nth-child(3) {
-           animation-delay: 833.33333ms;
-       }
+        .book_item:nth-child(3) {
+            animation-delay: 833.33333ms;
+        }
 
-       .book_item:nth-child(4) {
-           animation-delay: 1250ms;
-       }
+        .book_item:nth-child(4) {
+            animation-delay: 1250ms;
+        }
 
-       .book_item:nth-child(5) {
-           animation-delay: 1666.66667ms;
-       }
+        .book_item:nth-child(5) {
+            animation-delay: 1666.66667ms;
+        }
 
-       .book_item:nth-child(6) {
-           animation-delay: 2083.33333ms;
-       }
+        .book_item:nth-child(6) {
+            animation-delay: 2083.33333ms;
+        }
 
-       .shelf {
-           width: 300px;
-           height: 5px;
-           margin: 0 auto;
-           background-color: #4948fa;
-           position: relative;
-       }
+        .shelf {
+            width: 300px;
+            height: 5px;
+            margin: 0 auto;
+            background-color: #4948fa;
+            position: relative;
+        }
 
-       .shelf:before, .shelf:after {
-           content: '';
-           position: absolute;
-           width: 100%;
-           height: 100%;
-           background: #1e6cc7;
-           background-image: radial-gradient(rgba(255, 255, 255, 0.5) 30%, transparent 0);
-           background-size: 10px 10px;
-           background-position: 0 -2.5px;
-           top: 200%;
-           left: 5%;
-           animation: move 250ms linear infinite;
-       }
+        .shelf:before, .shelf:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #1e6cc7;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.5) 30%, transparent 0);
+            background-size: 10px 10px;
+            background-position: 0 -2.5px;
+            top: 200%;
+            left: 5%;
+            animation: move 250ms linear infinite;
+        }
 
-       .shelf:after {
-           top: 400%;
-           left: 7.5%;
-       }
+        .shelf:after {
+            top: 400%;
+            left: 7.5%;
+        }
 
-       @keyframes move {
-           from {
-               background-position-x: 0;
-           }
+        @keyframes move {
+            from {
+                background-position-x: 0;
+            }
 
-           to {
-               background-position-x: 10px;
-           }
-       }
+            to {
+                background-position-x: 10px;
+            }
+        }
 
-       @keyframes travel {
-           0% {
-               opacity: 0;
-               transform: translateX(300px) rotateZ(0deg) scaleY(1);
-           }
+        @keyframes travel {
+            0% {
+                opacity: 0;
+                transform: translateX(300px) rotateZ(0deg) scaleY(1);
+            }
 
-           6.5% {
-               transform: translateX(279.5px) rotateZ(0deg) scaleY(1.1);
-           }
+            6.5% {
+                transform: translateX(279.5px) rotateZ(0deg) scaleY(1.1);
+            }
 
-           8.8% {
-               transform: translateX(273.6px) rotateZ(0deg) scaleY(1);
-           }
+            8.8% {
+                transform: translateX(273.6px) rotateZ(0deg) scaleY(1);
+            }
 
-           10% {
-               opacity: 1;
-               transform: translateX(270px) rotateZ(0deg);
-           }
+            10% {
+                opacity: 1;
+                transform: translateX(270px) rotateZ(0deg);
+            }
 
-           17.6% {
-               transform: translateX(247.2px) rotateZ(-30deg);
-           }
+            17.6% {
+                transform: translateX(247.2px) rotateZ(-30deg);
+            }
 
-           45% {
-               transform: translateX(165px) rotateZ(-30deg);
-           }
+            45% {
+                transform: translateX(165px) rotateZ(-30deg);
+            }
 
-           49.5% {
-               transform: translateX(151.5px) rotateZ(-45deg);
-           }
+            49.5% {
+                transform: translateX(151.5px) rotateZ(-45deg);
+            }
 
-           61.5% {
-               transform: translateX(115.5px) rotateZ(-45deg);
-           }
+            61.5% {
+                transform: translateX(115.5px) rotateZ(-45deg);
+            }
 
-           67% {
-               transform: translateX(99px) rotateZ(-60deg);
-           }
+            67% {
+                transform: translateX(99px) rotateZ(-60deg);
+            }
 
-           76% {
-               transform: translateX(72px) rotateZ(-60deg);
-           }
+            76% {
+                transform: translateX(72px) rotateZ(-60deg);
+            }
 
-           83.5% {
-               opacity: 1;
-               transform: translateX(49.5px) rotateZ(-90deg);
-           }
+            83.5% {
+                opacity: 1;
+                transform: translateX(49.5px) rotateZ(-90deg);
+            }
 
-           90% {
-               opacity: 0;
-           }
+            90% {
+                opacity: 0;
+            }
 
-           100% {
-               opacity: 0;
-               transform: translateX(0px) rotateZ(-90deg);
-           }
-       }
-   </style>
+            100% {
+                opacity: 0;
+                transform: translateX(0px) rotateZ(-90deg);
+            }
+        }
+    </style>
 @stop
 @section('JS')
     <script type="text/javascript">
@@ -322,7 +323,7 @@
             $.post('{!! route('composer_main') !!}',
                 {
                     "path": $("#path").val(),
-                    "package":$("#package").val(),
+                    "package": $("#package").val(),
                     "command": func,
                     "function": "command",
                     "_token": "<?php echo csrf_token()?>"

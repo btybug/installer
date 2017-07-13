@@ -18,24 +18,28 @@ class Plugins
 
     public function __construct()
     {
-       $this->mainComposer= json_decode(\File::get(plugins_path('composer.json')),true);
-       $this->plugins=$this->sortPlugins();
+        $this->mainComposer = json_decode(\File::get(plugins_path('composer.json')), true);
+        $this->plugins = $this->sortPlugins();
     }
 
     private function sortPlugins()
     {
-        $plugins=$this->mainComposer['require'];
+        $plugins = $this->mainComposer['require'];
         unset($plugins['php']);
         return $plugins;
     }
-    public function getPlugins(){
-        $plugins=[];
-        foreach ($this->plugins as $pluginPath=>$version){
-            $plugins[$pluginPath]= json_decode(\File::get($this->pluginPath($pluginPath)),true);
+
+    public function getPlugins()
+    {
+        $plugins = [];
+        foreach ($this->plugins as $pluginPath => $version) {
+            $plugins[$pluginPath] = json_decode(\File::get($this->pluginPath($pluginPath)), true);
         }
         return collect($plugins);
     }
-    private function pluginPath($plugin){
-        return plugins_path('vendor/'.$plugin.'/composer.json');
+
+    private function pluginPath($plugin)
+    {
+        return plugins_path('vendor/' . $plugin . '/composer.json');
     }
 }
