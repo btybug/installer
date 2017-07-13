@@ -18,6 +18,7 @@ class IndexConroller extends Controller
 {
     public function getIndex(Request $request)
     {
+        $selected=null;
         $packages = new Plugins();
         $plugins = $packages->getPlugins();
         if ($request->p && isset($plugins[$request->p])) {
