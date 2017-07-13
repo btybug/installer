@@ -31,21 +31,23 @@
 
                             </a>
                         </div>
+                        @if($selected)
+
                         <div class="col-md-7">
                             <p>
-                                {{--@if($module->enabled)--}}
-                                <a href="#" namespace="{!! 'slug' !!}" data-action="disable"
+                                @if(isset($selected['autoload']))
+                                <a href="#" namespace="{!! $selected['name'] or null !!}" data-action="off"
                                    class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left enb-disb deactivate"><i
                                             class="fa fa-power-off f-s-14 m-r-10"></i> Deactivate</a>
-                                {{--@else--}}
-                                <a href="#" namespace="{!! 'slug' !!}" data-action="core-enable"
+                                @else
+                                <a href="#" namespace="{!! $selected['name'] or null !!}" data-action="on"
                                    style="background: #7fff00;color: #000000"
                                    class="btn  btn-sm  m-b-5 p-l-20 p-r-20 width-150 text-left  enb-disb"><i
                                             class="fa fa-plug f-s-14 m-r-10"></i>Activate</a>
-                                {{--@endif--}}
+                                @endif
                             </p>
                         </div>
-
+                        @endif
                         <div class="col-xs-6">
                         </div>
                     </div>
@@ -132,19 +134,14 @@
                 var namespace = $(this).attr('namespace');
                 var action=$(this).attr('data-action');
                 $.ajax({
-                    url: '/admin/modules/'+action,
+                    url: '{!! route('on_off') !!}',
                     data: {
                         namespace: namespace,
+                        action:action,
                         _token:  $('input[name=_token]').val()
                     },
-                    dataType: 'json',
                     success: function (data) {
-                        if (!data.error) {
                             location.reload();
-                        } else {
-                            $('#message-modal .modal-body').html(data.message);
-                            $('#message-modal').modal();
-                        }
                     },
                     type: 'POST'
                 });

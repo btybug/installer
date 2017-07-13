@@ -11,6 +11,7 @@ Route::get('/','IndexConroller@getIndex')->name('avatar_index');
 Route::group(['prefix'=>'composer'],function ($router){
     Route::get('/','ComposerController@getIndex')->name('composer_index');
     Route::post('/main','ComposerController@getMain')->name('composer_main');
+    Route::post('plugin-on-off','ComposerController@getOnOff')->name('on_off');
 });
 
 

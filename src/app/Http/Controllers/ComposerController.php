@@ -3,6 +3,7 @@
 namespace Avatar\Avatar\Http\Controllers;
 
 
+use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\Console\Tests\Input\StringInput;
@@ -76,7 +77,6 @@ class ComposerController extends Controller
         $path = str_replace('\\', '\\\\', $path);
         command:
         set_time_limit(-1);
-        ini_set('allow_url_fopen',true);
         putenv('COMPOSER_HOME=' . __DIR__ . '/../../../extracted/bin/composer');
         if (!file_exists($_POST['path'])) {
 
@@ -106,5 +106,11 @@ class ComposerController extends Controller
             return 'Extraction complete.' . PHP_EOL;
         }
         return 'composer.phar does not exist';
+    }
+
+    public function getOnOff(Request $request)
+    {
+        $plugin = new Plugins();
+        return \Response::json(['error' => !$plugin->onOff($request->all())]);
     }
 }
