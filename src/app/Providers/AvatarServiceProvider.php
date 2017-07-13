@@ -33,6 +33,7 @@ class AvatarServiceProvider extends ServiceProvider
                 "is_core" => "yes"
             ]]
         ]);
+
     }
 
 
