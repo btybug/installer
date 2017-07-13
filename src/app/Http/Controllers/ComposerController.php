@@ -13,8 +13,6 @@ class ComposerController extends Controller
 {
     public function getIndex()
     {
-        $qaq=new Plugins();
-        dd($qaq->getInstaleds());
         return view('core_avatar::Composer.index');
     }
 
