@@ -43,4 +43,9 @@ class IndexConroller extends Controller
         return view('core_avatar::index', compact('plugins', 'selected','enabled'));
     }
 
+    public function getExplore($repository,$package)
+    {
+        return view('core_avatar::Explores.index');
+    }
+
 }

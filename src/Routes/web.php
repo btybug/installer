@@ -7,6 +7,7 @@
  */
 
 Route::get('/','IndexConroller@getIndex')->name('avatar_index');
+Route::get('/{repository}/{package}/explore','IndexConroller@getExplore');
 
 Route::group(['prefix'=>'composer'],function ($router){
     Route::get('/','ComposerController@getIndex')->name('composer_index');

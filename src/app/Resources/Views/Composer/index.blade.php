@@ -9,7 +9,7 @@
             <h3>Commands:</h3>
             <div class="form-inline">
                 <input type="text" id="path" style="width:300px;" class="form-control disabled"
-                       placeholder="" value="{!! base_path('app/ExtraModules') !!}"/>
+                       placeholder="" readonly value="{!! base_path('app/ExtraModules') !!}"/>
                 <button id="install" onclick="call('install')" class="btn btn-success disabled">install</button>
                 <button id="update" onclick="call('update')" class="btn btn-success disabled">update</button>
                 <button id="dump-autoload" onclick="call('dump-autoload')" class="btn btn-success disabled">
