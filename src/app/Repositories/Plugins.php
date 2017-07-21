@@ -8,7 +8,7 @@
 
 namespace Avatar\Avatar\Repositories;
 
-
+//TODO replace base_path() with plugins_path()
 class Plugins
 {
     protected $mainComposer;
@@ -18,8 +18,20 @@ class Plugins
 
     public function __construct()
     {
-        $this->mainComposer = json_decode(\File::get(plugins_path('composer.json')), true);
-        $this->plugins = $this->sortPlugins();
+        composer:
+        if(\File::exists(base_path())){
+            $this->mainComposer = json_decode(\File::get(base_path('composer.json')), true);
+            $this->plugins = $this->sortPlugins();
+        }else{
+            if(\File::makeDirectory(base_path(config('avatar.plugins.path')))){
+                if( \File::put(base_path('composer.json'),'{}')){
+                    goto composer;
+                };
+            }
+
+         throw new \Exception('qaqa');
+        }
+
     }
 
     private function sortPlugins()
@@ -41,7 +53,7 @@ class Plugins
 
     private function pluginPath($plugin)
     {
-        return plugins_path('vendor/' . $plugin . '/composer.json');
+        return base_path('vendor/' . $plugin . '/composer.json');
     }
 
     public function onOff(array $data)
@@ -91,22 +103,22 @@ class Plugins
 
     public function getInstaleds()
     {
-        if(\File::exists(plugins_path('vendor'.DS.'composer'.DS.'installed.json'))){
-            return json_decode(\File::get(plugins_path('vendor'.DS.'composer'.DS.'installed.json')), true);
+        if(\File::exists(base_path('vendor'.DS.'composer'.DS.'installed.json'))){
+            return json_decode(\File::get(base_path('vendor'.DS.'composer'.DS.'installed.json')), true);
         }
 
     }
     public function setInstaleds($data)
     {
-        if(\File::exists(plugins_path('vendor'.DS.'composer'.DS.'installed.json'))){
-            return \File::put(plugins_path('vendor'.DS.'composer'.DS.'installed.json'),json_encode($data,true));
+        if(\File::exists(base_path('vendor'.DS.'composer'.DS.'installed.json'))){
+            return \File::put(base_path('vendor'.DS.'composer'.DS.'installed.json'),json_encode($data,true));
         }
 
     }
 
     public function command($command)
     {
-        $path = str_replace('\\', '\\\\', plugins_path());
+        $path = str_replace('\\', '\\\\', base_path());
         set_time_limit(-1);
         putenv('COMPOSER_HOME=' . __DIR__ . '/../../extracted/bin/composer');
         if (!file_exists($path)) {
@@ -139,7 +151,7 @@ class Plugins
     {
         $plugin=explode(':',$package);
         $this->mainComposer['require-dev'][$plugin[0]]=$plugin[1];
-        \File::put(plugins_path('composer.json'),json_encode($this->mainComposer,true));
+        \File::put(base_path('composer.json'),json_encode($this->mainComposer,true));
         return $this->command('update --dev --no-interaction');
     }
     public function composerRemoveDev($package)
@@ -149,7 +161,7 @@ class Plugins
             exit;
         }
         unset($this->mainComposer['require-dev'][$package]);
-        \File::put(plugins_path('composer.json'),json_encode($this->mainComposer));
+        \File::put(base_path('composer.json'),json_encode($this->mainComposer));
         return $this->command('update --dev --no-interaction');
     }
 }
