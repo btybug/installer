@@ -54,7 +54,7 @@
                     @if($selected)
                         <div class="row module_detail">
                             <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                                <img src="{!! url('resources/assets/images/module.jpg') !!}" alt=""
+                                <img src="{!! url('images/module.jpg') !!}" alt=""
                                      class="img-rounded img-responsive"/>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -125,7 +125,7 @@
 
 @stop
 @section('CSS')
-    {!! HTML::style('app/Modules/Modules/Resources/assets/css/new-store.css') !!}
+    {!! HTML::style('/css/new-store.css') !!}
 @stop
 @section('JS')
     <script>
