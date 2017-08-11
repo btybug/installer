@@ -9,6 +9,7 @@
 namespace Avatar\Avatar\Http\Controllers;
 
 
+use Avatar\Avatar\illustrator\CmsModules;
 use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -21,31 +22,32 @@ class IndexConroller extends Controller
 
         $selected=null;
         $packages = new Plugins();
+//        dd($packages->find('sahak.avatar/avatar')->units());
         $plugins = $packages->getPlugins();
-
         if ($request->p && isset($plugins[$request->p])) {
-            $selected = $plugins[$request->p];
+            $selected = $packages->find($plugins[$request->p]['name']);
         } elseif ($request->p && !isset($plugins[$request->p])) {
             abort('404');
         } elseif (!$request->p && !isset($plugins[$request->p])) {
             foreach ($plugins as $plugin) {
-                $selected = $plugin;
+                $selected = $packages->find($plugin['name']);
                 continue;
             }
         }
-
         $storage=$packages->getStorage();
         $enabled=true;
-        if(isset($selected['name']) && isset($storage[$selected['name']])){
+        if(isset($selected->name) && isset($storage[$selected->name])){
             $enabled=false;
         }
-
         return view('core_avatar::index', compact('plugins', 'selected','enabled'));
     }
 
     public function getExplore($repository,$package)
     {
-        return view('core_avatar::Explores.index');
+        $plugins=new Plugins();
+        $plugin=$plugins->find($repository.'/'.$package);
+        $units=$plugin->units();
+        return view('core_avatar::Explores.index',compact('plugin','units'));
     }
 
 }

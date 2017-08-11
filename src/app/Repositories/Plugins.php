@@ -9,113 +9,146 @@
 namespace Avatar\Avatar\Repositories;
 
 //TODO replace base_path() with plugins_path()
+use Sahakavatar\Cms\Models\Templates\Units;
+
+/**
+ * Class Plugins
+ * @package Avatar\Avatar\Repositories
+ */
 class Plugins
 {
+    /**
+     * @var mixed
+     */
     protected $mainComposer;
+    /**
+     * @var
+     */
     protected $backUp;
+    /**
+     * @var array
+     */
     protected $plugins;
 
 
+    /**
+     * Plugins constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         composer:
-        if(\File::exists(base_path())){
-            $this->mainComposer = json_decode(\File::get(base_path('composer.json')), true);
+        if (\File::exists(base_path())) {
+            $this->mainComposer = json_decode(\File::get(base_path('vendor' . DS . 'sahak.avatar' . DS . 'cms' . DS . 'composer.json')), true);
             $this->plugins = $this->sortPlugins();
-        }else{
-            if(\File::makeDirectory(base_path(config('avatar.plugins.path')))){
-                if( \File::put(base_path('composer.json'),'{}')){
+        } else {
+            if (\File::makeDirectory(base_path(config('avatar.plugins.path')))) {
+                if (\File::put(base_path('composer.json'), '{}')) {
                     goto composer;
                 };
             }
 
-         throw new \Exception('qaqa');
+            throw new \Exception('qaqa');
         }
 
     }
 
+    /**
+     * @return array
+     */
     private function sortPlugins()
     {
-        $plugins = isset($this->mainComposer['require-dev'])?$this->mainComposer['require-dev']:[];
+        $plugins = $this->mainComposer['require'] ?? [];
         unset($plugins['php']);
         return $plugins;
     }
 
-    public function getPlugins()
-    {
-        $plugins = [];
-        foreach ($this->plugins as $pluginPath => $version) {
-            if (\File::exists($this->pluginPath($pluginPath)))
-            $plugins[$pluginPath] = json_decode(\File::get($this->pluginPath($pluginPath)), true);
-        }
-        return collect($plugins);
-    }
-
-    private function pluginPath($plugin)
-    {
-        return base_path('vendor/' . $plugin . '/composer.json');
-    }
-
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function onOff(array $data)
     {
-        $result=false;
-        switch ($data['action']){
-            case 'on':$result=$this->enable($data['namespace']);break;
-            case 'off':$result=$this->disable($data['namespace']);break;
+        $result = false;
+        switch ($data['action']) {
+            case 'on':
+                $result = $this->enable($data['namespace']);
+                break;
+            case 'off':
+                $result = $this->disable($data['namespace']);
+                break;
         }
         return $result;
     }
 
+    /**
+     * @param $pluginPath
+     * @return bool
+     */
     public function enable($pluginPath)
     {
-        $plugins=$this->getInstaleds();
-        foreach ($plugins as $key=>$plugin){
-            if($plugin['name']==$pluginPath){
+        $plugins = $this->getInstaleds();
+        foreach ($plugins as $key => $plugin) {
+            if ($plugin['name'] == $pluginPath) {
 //                $plugin=$plugins[$pluginPath];
-                $store=$this->getStorage();
-                $plugins[$key]['autoload']=$store[$pluginPath];
+                $store = $this->getStorage();
+                $plugins[$key]['autoload'] = $store[$pluginPath];
                 unset($store[$pluginPath]);
                 $this->addStorage($store);
-                $this->setInstaleds($plugins);continue;
-
-            }
-        }
-        return $this->command('dump-autoload');
-
-    }
-
-    public function disable($pluginPath)
-    {
-        $plugins=$this->getInstaleds();
-        foreach ($plugins as $key=>$plugin){
-            if($plugin['name']==$pluginPath){
-//                $plugin=$plugins[$pluginPath];
-                $store=$this->getStorage();
-                $store[$pluginPath]=$plugin['autoload'];
-                $this->addStorage($store);
-                unset($plugins[$key]['autoload']);
                 $this->setInstaleds($plugins);
-               continue;
+                continue;
+
             }
         }
         return $this->command('dump-autoload');
+
     }
 
+    /**
+     * @return mixed
+     */
     public function getInstaleds()
     {
-        if(\File::exists(base_path('vendor'.DS.'composer'.DS.'installed.json'))){
-            return json_decode(\File::get(base_path('vendor'.DS.'composer'.DS.'installed.json')), true);
+        if (\File::exists(base_path('vendor' . DS . 'composer' . DS . 'installed.json'))) {
+            return json_decode(\File::get(base_path('vendor' . DS . 'composer' . DS . 'installed.json')), true);
         }
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStorage()
+    {
+        if (\File::exists(storage_path('packagis.txt'))) {
+            return json_decode(\File::get(storage_path('packagis.txt')), true);
+        }
+    }
+
+    /**
+     * @param array $data
+     */
+    public function addStorage(array $data)
+    {
+        \File::put(storage_path('packagis.txt'), json_encode($data, true));
+    }
+
+    /**
+     * @param $data
+     * @return int
+     */
     public function setInstaleds($data)
     {
-        if(\File::exists(base_path('vendor'.DS.'composer'.DS.'installed.json'))){
-            return \File::put(base_path('vendor'.DS.'composer'.DS.'installed.json'),json_encode($data,true));
+        if (\File::exists(base_path('vendor' . DS . 'composer' . DS . 'installed.json'))) {
+            return \File::put(base_path('vendor' . DS . 'composer' . DS . 'installed.json'), json_encode($data, true));
         }
 
     }
 
+    /**
+     * @param $command
+     * @return bool
+     */
     public function command($command)
     {
         $path = str_replace('\\', '\\\\', base_path());
@@ -129,39 +162,126 @@ class Plugins
             $input = new \Symfony\Component\Console\Input\StringInput($command . ' -vvv -d ' . $path);
             $output = new \Symfony\Component\Console\Output\StreamOutput(fopen('php://output', 'w'));
             $app = new \Composer\Console\Application();
-             $app->run($input, $output);
-             return true;
+            $app->run($input, $output);
+            return true;
         }
         return false;
     }
 
-    public function addStorage(array $data)
+    /**
+     * @param $pluginPath
+     * @return bool
+     */
+    public function disable($pluginPath)
     {
-        \File::put(storage_path('packagis.txt'),json_encode($data,true));
-    }
-
-    public function getStorage()
-    {
-        if(\File::exists(storage_path('packagis.txt'))){
-            return json_decode(\File::get(storage_path('packagis.txt')),true);
+        $plugins = $this->getInstaleds();
+        foreach ($plugins as $key => $plugin) {
+            if ($plugin['name'] == $pluginPath) {
+//                $plugin=$plugins[$pluginPath];
+                $store = $this->getStorage();
+                $store[$pluginPath] = $plugin['autoload'];
+                $this->addStorage($store);
+                unset($plugins[$key]['autoload']);
+                $this->setInstaleds($plugins);
+                continue;
+            }
         }
+        return $this->command('dump-autoload');
     }
 
+    /**
+     * @param $package
+     * @return bool
+     */
     public function composerRequireDev($package)
     {
-        $plugin=explode(':',$package);
-        $this->mainComposer['require-dev'][$plugin[0]]=$plugin[1];
-        \File::put(base_path('composer.json'),json_encode($this->mainComposer,true));
+        $plugin = explode(':', $package);
+        $this->mainComposer['require-dev'][$plugin[0]] = $plugin[1];
+        \File::put(base_path('composer.json'), json_encode($this->mainComposer, true));
         return $this->command('update --dev --no-interaction');
     }
+
+    /**
+     * @param $package
+     * @return bool
+     */
     public function composerRemoveDev($package)
     {
-        if(!isset($this->mainComposer['require-dev'][$package])){
+        if (!isset($this->mainComposer['require-dev'][$package])) {
             echo 'Warning wrong package name!!!';
             exit;
         }
         unset($this->mainComposer['require-dev'][$package]);
-        \File::put(base_path('composer.json'),json_encode($this->mainComposer));
+        \File::put(base_path('composer.json'), json_encode($this->mainComposer));
         return $this->command('update --dev --no-interaction');
+    }
+
+    /**
+     * @param $package
+     * @return $this|null
+     */
+    public function find($package)
+    {
+        if (isset($this->getPlugins()[$package])) {
+            $this->attributes = $this->getPlugins()[$package];
+            return $this;
+        }
+        return null;
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getPlugins()
+    {
+        $plugins = [];
+        foreach ($this->plugins as $pluginPath => $version) {
+            if (\File::exists($this->pluginPath($pluginPath)))
+                $plugins[$pluginPath] = json_decode(\File::get($this->pluginPath($pluginPath)), true);
+            $plugins[$pluginPath]['version'] = $version;
+        }
+        return collect($plugins);
+    }
+
+    /**
+     * @param $plugin
+     * @return string
+     */
+    private function pluginPath($plugin)
+    {
+        return base_path('vendor/' . $plugin . '/composer.json');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function units()
+    {
+        $config = $this->config;
+        if ($config && isset($config['units']) && is_array($config['units'])) {
+            $units = [];
+            foreach ($config['units'] as $slug) {
+                $units[] = Units::find($slug);
+            }
+            return collect($units);
+        }
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function __get($name)
+    {
+        return $this->attributes[$name] ?? false;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return isset($this->attributes[$name]);
     }
 }

@@ -67,15 +67,17 @@ class ComposerController extends Controller
     {
         switch ($command) {
             case 'remove':
-                $plugin= new Plugins();
-                $plugin->composerRemoveDev($package);exit;
+                $plugin = new Plugins();
+                $plugin->composerRemoveDev($package);
+                exit;
                 break;
             case 'require':
-                $plugin= new Plugins();
-                $plugin->composerRequireDev($package);exit;
+                $plugin = new Plugins();
+                $plugin->composerRequireDev($package);
+                exit;
                 break;
             case 'install':
-                $package=' --dev';
+                $package = ' --dev';
                 break;
             default:
                 $package = null;

@@ -4,6 +4,7 @@ namespace Avatar\Avatar\Providers;
 
 //use TorMorten\Eventy;
 
+use Avatar\Avatar\illustrator\CmsModules;
 use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Support\ServiceProvider;
 

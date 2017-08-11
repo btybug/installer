@@ -20,5 +20,8 @@
     "psr-4": {
       "Avatar\\Avatar\\": "src/app/"
     }
+  },
+  "config":{
+    "units":["5230135dc425o","58db8f2896666"]
   }
 }
