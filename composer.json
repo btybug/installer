@@ -1,7 +1,7 @@
 {
   "name": "sahak.avatar/avatar",
   "description": "plugin system",
-  "type": "package",
+  "type": "addon",
   "license": "Apach2",
   "authors": [
     {
@@ -10,6 +10,7 @@
     }
   ],
   "require": {
+    "sahak.avatar/console":"dev-master"
   },
   "require-dev": {
     "composer/composer": "dev-master"
