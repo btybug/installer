@@ -9,6 +9,7 @@
 namespace Avatar\Avatar\Repositories;
 
 //TODO replace base_path() with plugins_path()
+use Sahakavatar\Cms\Models\ExtraModules\config;
 use Sahakavatar\Cms\Models\Templates\Units;
 
 /**
@@ -29,7 +30,9 @@ class Plugins
      * @var array
      */
     protected $plugins;
-
+    protected $path;
+    protected $dir;
+    protected $type;
 
     /**
      * Plugins constructor.
@@ -37,9 +40,33 @@ class Plugins
      */
     public function __construct()
     {
+
+
+    }
+
+    public function plugins()
+    {
+        $this->path = base_path(config('avatar.plugins.path') . DS . 'composer.json');
+        $this->dir=config('avatar.plugins.path');
+        $this->type='plugin';
+        $this->separator();
+        return $this;
+    }
+
+    public function modules()
+    {
+        $this->path = base_path('vendor' . DS . 'sahak.avatar' . DS . 'cms' . DS . 'composer.json');
+        $this->dir=config('avatar.modules.path');
+        $this->type='module';
+        $this->separator();
+        return $this;
+    }
+
+    protected function separator()
+    {
         composer:
         if (\File::exists(base_path())) {
-            $this->mainComposer = json_decode(\File::get(base_path('vendor' . DS . 'sahak.avatar' . DS . 'cms' . DS . 'composer.json')), true);
+            $this->mainComposer = json_decode(\File::get($this->path), true);
             $this->plugins = $this->sortPlugins();
         } else {
             if (\File::makeDirectory(base_path(config('avatar.plugins.path')))) {
@@ -50,7 +77,6 @@ class Plugins
 
             throw new \Exception('qaqa');
         }
-
     }
 
     /**
@@ -62,6 +88,7 @@ class Plugins
         unset($plugins['php']);
         return $plugins;
     }
+
 
     /**
      * @param array $data
@@ -109,7 +136,7 @@ class Plugins
      */
     public function getInstaleds()
     {
-        if (\File::exists(base_path('vendor' . DS . 'composer' . DS . 'installed.json'))) {
+        if (\File::exists(base_path($this->path . DS . 'composer' . DS . 'installed.json'))) {
             return json_decode(\File::get(base_path('vendor' . DS . 'composer' . DS . 'installed.json')), true);
         }
 
@@ -196,8 +223,8 @@ class Plugins
     public function composerRequireDev($package)
     {
         $plugin = explode(':', $package);
-        $this->mainComposer['require-dev'][$plugin[0]] = $plugin[1];
-        \File::put(base_path('composer.json'), json_encode($this->mainComposer, true));
+        $this->mainComposer['require'][$plugin[0]] = $plugin[1];
+        \File::put($this->path, json_encode($this->mainComposer, true));
         return $this->command('update --dev --no-interaction');
     }
 
@@ -214,42 +241,6 @@ class Plugins
         unset($this->mainComposer['require-dev'][$package]);
         \File::put(base_path('composer.json'), json_encode($this->mainComposer));
         return $this->command('update --dev --no-interaction');
-    }
-
-    /**
-     * @param $package
-     * @return $this|null
-     */
-    public function find($package)
-    {
-        if (isset($this->getPlugins()[$package])) {
-            $this->attributes = $this->getPlugins()[$package];
-            return $this;
-        }
-        return null;
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getPlugins()
-    {
-        $plugins = [];
-        foreach ($this->plugins as $pluginPath => $version) {
-            if (\File::exists($this->pluginPath($pluginPath)))
-                $plugins[$pluginPath] = json_decode(\File::get($this->pluginPath($pluginPath)), true);
-            $plugins[$pluginPath]['version'] = $version;
-        }
-        return collect($plugins);
-    }
-
-    /**
-     * @param $plugin
-     * @return string
-     */
-    private function pluginPath($plugin)
-    {
-        return base_path('vendor/' . $plugin . '/composer.json');
     }
 
     /**
@@ -283,5 +274,72 @@ class Plugins
     public function __isset($name)
     {
         return isset($this->attributes[$name]);
+    }
+
+    public function children()
+    {
+        $children = [];
+
+        foreach ($this->getPlugins(true) as $plugin) {
+            if (isset($plugin['parent']) && $plugin['parent'] == $this->name) {
+                $children[] = $this->find($plugin['name']);
+            }
+        }
+
+        return collect($children);
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getPlugins($all = false)
+    {
+        $plugins = [];
+
+        foreach ($this->plugins as $pluginPath => $version) {
+            if (\File::exists($this->pluginPath($pluginPath))) {
+                $plugin = json_decode(\File::get($this->pluginPath($pluginPath)), true);
+                if ($plugin['type'] == $this->type || $all) {
+                    $plugins[$pluginPath] = $plugin;
+                    $plugins[$pluginPath]['path'] = $this->path;
+                    $plugins[$pluginPath]['version'] = $version;
+
+                }
+            }
+        }
+        return collect($plugins);
+    }
+
+    /**
+     * @param $plugin
+     * @return string
+     */
+    private function pluginPath($plugin)
+    {
+        return base_path($this->dir.DS.'vendor'.DS. $plugin .DS.'composer.json');
+    }
+
+    /**
+     * @param $package
+     * @return $this|null
+     */
+    public function find($package)
+    {
+        $plugins = $this->getPlugins(true);
+        if (isset($plugins[$package])) {
+            $this->attributes = $plugins[$package];
+            return $this;
+        }
+        return null;
+    }
+
+    public function getPath($path=null)
+    {
+        return base_path($this->dir.DS.$this->name.$path);
+    }
+
+    public function parent()
+    {
+        return $this->find($this->parent);
     }
 }

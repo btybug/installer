@@ -6,14 +6,23 @@ namespace Avatar\Avatar\Http\Controllers;
 use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Sahakavatar\Cms\Models\ExtraModules\config;
 use Symfony\Component\Console\Tests\Input\StringInput;
 
 
 class ComposerController extends Controller
 {
-    public function getIndex()
+    protected $path;
+
+    public function __construct()
     {
-        return view('core_avatar::Composer.index');
+        $this->path=config('avatar.pluginsDir');
+    }
+    public function getIndex(Request $request)
+    {
+        $plugin=$request->get('p');
+        $path=$this->path;
+        return view('core_avatar::Composer.index',compact('plugin','path'));
     }
 
 
@@ -65,23 +74,6 @@ class ComposerController extends Controller
 
     public function command($path, $package, $command)
     {
-        switch ($command) {
-            case 'remove':
-                $plugin = new Plugins();
-                $plugin->composerRemoveDev($package);
-                exit;
-                break;
-            case 'require':
-                $plugin = new Plugins();
-                $plugin->composerRequireDev($package);
-                exit;
-                break;
-            case 'install':
-                $package = ' --dev';
-                break;
-            default:
-                $package = null;
-        }
         $path = str_replace('\\', '\\\\', $path);
         command:
         set_time_limit(-1);

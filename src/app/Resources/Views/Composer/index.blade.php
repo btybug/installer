@@ -1,5 +1,6 @@
-@extends('cms::layouts.admin')
-@section('content')
+@extends('cms::layouts.mTabs',['index'=>'avatar_packages'])
+<!-- Nav tabs -->
+@section('tab')
 
     <div class="row">
         <div class="col-lg-1"></div>
@@ -9,7 +10,7 @@
             <h3>Commands:</h3>
             <div class="form-inline">
                 <input type="text" id="path" style="width:300px;" class="form-control disabled"
-                       placeholder="" readonly value="{!! base_path()!!}"/>
+                       placeholder="" readonly value="{!! base_path($path)!!}"/>
                 <button id="install" onclick="call('install')" class="btn btn-success disabled">install</button>
                 <button id="update" onclick="call('update')" class="btn btn-success disabled">update</button>
                 <button id="dump-autoload" onclick="call('dump-autoload')" class="btn btn-success disabled">
@@ -19,7 +20,7 @@
             <div class="form-inline">
                 <br/><br/>
                 <input type="text" id="package" style="width:300px;" class="form-control disabled"
-                       placeholder="sahak.avatar/provaldation:dev-master" value=""/>
+                       placeholder="sahak.avatar/provaldation:dev-master" value="{!! $plugin !!}"/>
                 <button id="require" onclick="call('require')" class="btn btn-success disabled">Require plugin</button>
                 <button id="remove" onclick="call('remove')" class="btn btn-success disabled">Delete plugin</button>
 

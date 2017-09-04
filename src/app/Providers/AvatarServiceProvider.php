@@ -29,12 +29,22 @@ class AvatarServiceProvider extends ServiceProvider
             "is_core" => "yes",
             "main" => true,
             "children" => [[
-                "title" => "Plugins",
+                "title" => "AVATAR",
                 "custom-link" => '/admin/avatar',
                 "icon" => "fa fa-angle-right",
                 "is_core" => "yes"
             ]]
         ]);
+        $tabs=['avatar_packages'=>[
+            [
+                'title' => 'Composer',
+                'url' => '/admin/avatar/composer',
+            ],[
+                'title' => 'Market',
+                'url' => '/admin/avatar/market',
+            ],
+        ]];
+        \Eventy::action('my.tab', $tabs);
         global $_PLUGIN_PROVIDERS;
 //        dd($_PLUGIN_PROVIDERS);
         if(isset($_PLUGIN_PROVIDERS['pluginProviders'])){

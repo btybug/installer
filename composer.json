@@ -24,5 +24,6 @@
   },
   "config":{
     "units":["5230135dc425o","58db8f2896666"]
-  }
+  },
+  "parent":"sahak.avatar/console"
 }
