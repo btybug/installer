@@ -312,9 +312,11 @@
         $(document).ready(function () {
             check();
         });
+
         function url() {
             return '{!! route('composer_main') !!}';
         }
+
         function call(func) {
             $(".bookshelf_wrapper").removeClass("hidden");
             $("#output").append("\nplease wait...\n");
@@ -340,6 +342,7 @@
                 }
             );
         }
+
         function check() {
             $("#output").append('\nloading...\n');
             $.post(url(),

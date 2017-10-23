@@ -1,75 +1,64 @@
 <?php
 
 
-
-
-
-
-
-
-
-
-
 namespace Composer\SelfUpdate;
 
-use Composer\Util\RemoteFilesystem;
 use Composer\Config;
 use Composer\Json\JsonFile;
-
-
+use Composer\Util\RemoteFilesystem;
 
 
 class Versions
 {
-private $rfs;
-private $config;
-private $channel;
+    private $rfs;
+    private $config;
+    private $channel;
 
-public function __construct(Config $config, RemoteFilesystem $rfs)
-{
-$this->rfs = $rfs;
-$this->config = $config;
-}
+    public function __construct(Config $config, RemoteFilesystem $rfs)
+    {
+        $this->rfs = $rfs;
+        $this->config = $config;
+    }
 
-public function getChannel()
-{
-if ($this->channel) {
-return $this->channel;
-}
+    public function getLatest()
+    {
+        $protocol = extension_loaded('openssl') ? 'https' : 'http';
+        $versions = JsonFile::parseJson($this->rfs->getContents('getcomposer.org', $protocol . '://getcomposer.org/versions', false));
 
-$channelFile = $this->config->get('home').'/update-channel';
-if (file_exists($channelFile)) {
-$channel = trim(file_get_contents($channelFile));
-if (in_array($channel, array('stable', 'preview', 'snapshot'), true)) {
-return $this->channel = $channel;
-}
-}
+        foreach ($versions[$this->getChannel()] as $version) {
+            if ($version['min-php'] <= PHP_VERSION_ID) {
+                return $version;
+            }
+        }
 
-return $this->channel = 'stable';
-}
+        throw new \LogicException('There is no version of Composer available for your PHP version (' . PHP_VERSION . ')');
+    }
 
-public function setChannel($channel)
-{
-if (!in_array($channel, array('stable', 'preview', 'snapshot'), true)) {
-throw new \InvalidArgumentException('Invalid channel '.$channel.', must be one of: stable, preview, snapshot');
-}
+    public function getChannel()
+    {
+        if ($this->channel) {
+            return $this->channel;
+        }
 
-$channelFile = $this->config->get('home').'/update-channel';
-$this->channel = $channel;
-file_put_contents($channelFile, $channel.PHP_EOL);
-}
+        $channelFile = $this->config->get('home') . '/update-channel';
+        if (file_exists($channelFile)) {
+            $channel = trim(file_get_contents($channelFile));
+            if (in_array($channel, array('stable', 'preview', 'snapshot'), true)) {
+                return $this->channel = $channel;
+            }
+        }
 
-public function getLatest()
-{
-$protocol = extension_loaded('openssl') ? 'https' : 'http';
-$versions = JsonFile::parseJson($this->rfs->getContents('getcomposer.org', $protocol . '://getcomposer.org/versions', false));
+        return $this->channel = 'stable';
+    }
 
-foreach ($versions[$this->getChannel()] as $version) {
-if ($version['min-php'] <= PHP_VERSION_ID) {
-return $version;
-}
-}
+    public function setChannel($channel)
+    {
+        if (!in_array($channel, array('stable', 'preview', 'snapshot'), true)) {
+            throw new \InvalidArgumentException('Invalid channel ' . $channel . ', must be one of: stable, preview, snapshot');
+        }
 
-throw new \LogicException('There is no version of Composer available for your PHP version ('.PHP_VERSION.')');
-}
+        $channelFile = $this->config->get('home') . '/update-channel';
+        $this->channel = $channel;
+        file_put_contents($channelFile, $channel . PHP_EOL);
+    }
 }

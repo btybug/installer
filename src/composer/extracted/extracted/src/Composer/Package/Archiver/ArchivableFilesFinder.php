@@ -1,105 +1,81 @@
 <?php
 
 
-
-
-
-
-
-
-
-
-
 namespace Composer\Package\Archiver;
 
 use Composer\Util\Filesystem;
 use FilesystemIterator;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
-
-
-
-
-
-
-
 
 
 class ArchivableFilesFinder extends \FilterIterator
 {
 
 
-
-protected $finder;
-
+    protected $finder;
 
 
+    public function __construct($sources, array $excludes, $ignoreFilters = false)
+    {
+        $fs = new Filesystem();
 
+        $sources = $fs->normalizePath($sources);
 
+        if ($ignoreFilters) {
+            $filters = array();
+        } else {
+            $filters = array(
+                new HgExcludeFilter($sources),
+                new GitExcludeFilter($sources),
+                new ComposerExcludeFilter($sources, $excludes),
+            );
+        }
 
+        $this->finder = new Finder();
 
+        $filter = function (\SplFileInfo $file) use ($sources, $filters, $fs) {
+            if ($file->isLink() && strpos($file->getLinkTarget(), $sources) !== 0) {
+                return false;
+            }
 
-public function __construct($sources, array $excludes, $ignoreFilters = false)
-{
-$fs = new Filesystem();
+            $relativePath = preg_replace(
+                '#^' . preg_quote($sources, '#') . '#',
+                '',
+                $fs->normalizePath($file->getRealPath())
+            );
 
-$sources = $fs->normalizePath($sources);
+            $exclude = false;
+            foreach ($filters as $filter) {
+                $exclude = $filter->filter($relativePath, $exclude);
+            }
 
-if ($ignoreFilters) {
-$filters = array();
-} else {
-$filters = array(
-new HgExcludeFilter($sources),
-new GitExcludeFilter($sources),
-new ComposerExcludeFilter($sources, $excludes),
-);
-}
+            return !$exclude;
+        };
 
-$this->finder = new Finder();
+        if (method_exists($filter, 'bindTo')) {
+            $filter = $filter->bindTo(null);
+        }
 
-$filter = function (\SplFileInfo $file) use ($sources, $filters, $fs) {
-if ($file->isLink() && strpos($file->getLinkTarget(), $sources) !== 0) {
-return false;
-}
+        $this->finder
+            ->in($sources)
+            ->filter($filter)
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(false);
 
-$relativePath = preg_replace(
-'#^'.preg_quote($sources, '#').'#',
-'',
-$fs->normalizePath($file->getRealPath())
-);
+        parent::__construct($this->finder->getIterator());
+    }
 
-$exclude = false;
-foreach ($filters as $filter) {
-$exclude = $filter->filter($relativePath, $exclude);
-}
+    public function accept()
+    {
 
-return !$exclude;
-};
+        $current = $this->getInnerIterator()->current();
 
-if (method_exists($filter, 'bindTo')) {
-$filter = $filter->bindTo(null);
-}
+        if (!$current->isDir()) {
+            return true;
+        }
 
-$this->finder
-->in($sources)
-->filter($filter)
-->ignoreVCS(true)
-->ignoreDotFiles(false);
+        $iterator = new FilesystemIterator($current, FilesystemIterator::SKIP_DOTS);
 
-parent::__construct($this->finder->getIterator());
-}
-
-public function accept()
-{
-
-$current = $this->getInnerIterator()->current();
-
-if (!$current->isDir()) {
-return true;
-}
-
-$iterator = new FilesystemIterator($current, FilesystemIterator::SKIP_DOTS);
-
-return !$iterator->valid();
-}
+        return !$iterator->valid();
+    }
 }

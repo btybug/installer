@@ -1,4 +1,5 @@
 <?php
+
 namespace Avatar\Avatar\illustrator;
 
 /**
@@ -10,18 +11,23 @@ namespace Avatar\Avatar\illustrator;
 
 class CmsPlugins
 {
-    private function pluginsReader(){
+    public function modules()
+    {
+        // TODO: Implement modules() method.
+    }
+
+    public function plugins()
+    {
+        // TODO: Implement plugins() method.
+    }
+
+    private function pluginsReader()
+    {
 
     }
-    private function modulesReader(){
+
+    private function modulesReader()
+    {
 
     }
-public function modules()
-{
-    // TODO: Implement modules() method.
-}
-public function plugins()
-{
-    // TODO: Implement plugins() method.
-}
 }

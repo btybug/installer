@@ -1,95 +1,39 @@
 <?php
 
 
-
-
-
-
-
-
-
-
-
 namespace Composer\Package;
-
-
-
-
 
 
 interface CompletePackageInterface extends PackageInterface
 {
 
 
+    public function getScripts();
 
 
-
-public function getScripts();
-
+    public function getRepositories();
 
 
+    public function getLicense();
 
 
+    public function getKeywords();
 
 
-
-public function getRepositories();
-
+    public function getDescription();
 
 
+    public function getHomepage();
 
 
-
-public function getLicense();
-
+    public function getAuthors();
 
 
+    public function getSupport();
 
 
-
-public function getKeywords();
-
+    public function isAbandoned();
 
 
-
-
-
-public function getDescription();
-
-
-
-
-
-
-public function getHomepage();
-
-
-
-
-
-
-
-
-public function getAuthors();
-
-
-
-
-
-
-public function getSupport();
-
-
-
-
-
-
-public function isAbandoned();
-
-
-
-
-
-
-public function getReplacementPackage();
+    public function getReplacementPackage();
 }

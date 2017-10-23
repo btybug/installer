@@ -1,120 +1,103 @@
 <?php
 
 
-
-
-
-
-
-
-
-
 namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Exception\LogicException;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Formatter\OutputFormatter;
-
-
-
-
 
 
 class SymfonyQuestionHelper extends QuestionHelper
 {
 
 
+    public function ask(InputInterface $input, OutputInterface $output, Question $question)
+    {
+        $validator = $question->getValidator();
+        $question->setValidator(function ($value) use ($validator) {
+            if (null !== $validator) {
+                $value = $validator($value);
+            } else {
 
-public function ask(InputInterface $input, OutputInterface $output, Question $question)
-{
-$validator = $question->getValidator();
-$question->setValidator(function ($value) use ($validator) {
-if (null !== $validator) {
-$value = $validator($value);
-} else {
+                if (!is_array($value) && !is_bool($value) && 0 === strlen($value)) {
+                    throw new LogicException('A value is required.');
+                }
+            }
 
- if (!is_array($value) && !is_bool($value) && 0 === strlen($value)) {
-throw new LogicException('A value is required.');
-}
-}
+            return $value;
+        });
 
-return $value;
-});
-
-return parent::ask($input, $output, $question);
-}
-
+        return parent::ask($input, $output, $question);
+    }
 
 
+    protected function writePrompt(OutputInterface $output, Question $question)
+    {
+        $text = OutputFormatter::escapeTrailingBackslash($question->getQuestion());
+        $default = $question->getDefault();
 
-protected function writePrompt(OutputInterface $output, Question $question)
-{
-$text = OutputFormatter::escapeTrailingBackslash($question->getQuestion());
-$default = $question->getDefault();
+        switch (true) {
+            case null === $default:
+                $text = sprintf(' <info>%s</info>:', $text);
 
-switch (true) {
-case null === $default:
-$text = sprintf(' <info>%s</info>:', $text);
+                break;
 
-break;
+            case $question instanceof ConfirmationQuestion:
+                $text = sprintf(' <info>%s (yes/no)</info> [<comment>%s</comment>]:', $text, $default ? 'yes' : 'no');
 
-case $question instanceof ConfirmationQuestion:
-$text = sprintf(' <info>%s (yes/no)</info> [<comment>%s</comment>]:', $text, $default ? 'yes' : 'no');
+                break;
 
-break;
+            case $question instanceof ChoiceQuestion && $question->isMultiselect():
+                $choices = $question->getChoices();
+                $default = explode(',', $default);
 
-case $question instanceof ChoiceQuestion && $question->isMultiselect():
-$choices = $question->getChoices();
-$default = explode(',', $default);
+                foreach ($default as $key => $value) {
+                    $default[$key] = $choices[trim($value)];
+                }
 
-foreach ($default as $key => $value) {
-$default[$key] = $choices[trim($value)];
-}
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
 
-$text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
+                break;
 
-break;
+            case $question instanceof ChoiceQuestion:
+                $choices = $question->getChoices();
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default]));
 
-case $question instanceof ChoiceQuestion:
-$choices = $question->getChoices();
-$text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default]));
+                break;
 
-break;
+            default:
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
+        }
 
-default:
-$text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
-}
+        $output->writeln($text);
 
-$output->writeln($text);
+        if ($question instanceof ChoiceQuestion) {
+            $width = max(array_map('strlen', array_keys($question->getChoices())));
 
-if ($question instanceof ChoiceQuestion) {
-$width = max(array_map('strlen', array_keys($question->getChoices())));
+            foreach ($question->getChoices() as $key => $value) {
+                $output->writeln(sprintf("  [<comment>%-${width}s</comment>] %s", $key, $value));
+            }
+        }
 
-foreach ($question->getChoices() as $key => $value) {
-$output->writeln(sprintf("  [<comment>%-${width}s</comment>] %s", $key, $value));
-}
-}
-
-$output->write(' > ');
-}
-
+        $output->write(' > ');
+    }
 
 
+    protected function writeError(OutputInterface $output, \Exception $error)
+    {
+        if ($output instanceof SymfonyStyle) {
+            $output->newLine();
+            $output->error($error->getMessage());
 
-protected function writeError(OutputInterface $output, \Exception $error)
-{
-if ($output instanceof SymfonyStyle) {
-$output->newLine();
-$output->error($error->getMessage());
+            return;
+        }
 
-return;
-}
-
-parent::writeError($output, $error);
-}
+        parent::writeError($output, $error);
+    }
 }

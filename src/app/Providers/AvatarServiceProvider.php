@@ -4,8 +4,6 @@ namespace Avatar\Avatar\Providers;
 
 //use TorMorten\Eventy;
 
-use Avatar\Avatar\illustrator\CmsModules;
-use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -20,6 +18,7 @@ class AvatarServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/Lang', 'core_avatar');
         $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'core_avatar');
         \Eventy::action('admin.menus', [
@@ -35,11 +34,11 @@ class AvatarServiceProvider extends ServiceProvider
                 "is_core" => "yes"
             ]]
         ]);
-        $tabs=['avatar_packages'=>[
+        $tabs = ['avatar_packages' => [
             [
                 'title' => 'Composer',
                 'url' => '/admin/avatar/composer',
-            ],[
+            ], [
                 'title' => 'Market',
                 'url' => '/admin/avatar/market',
             ],
@@ -47,15 +46,12 @@ class AvatarServiceProvider extends ServiceProvider
         \Eventy::action('my.tab', $tabs);
         global $_PLUGIN_PROVIDERS;
 //        dd($_PLUGIN_PROVIDERS);
-        if(isset($_PLUGIN_PROVIDERS['pluginProviders'])){
-            foreach ($_PLUGIN_PROVIDERS['pluginProviders'] as $namespace=>$options){
-                $this->app->register($namespace,$options['options'],$options['force']);
+        if (isset($_PLUGIN_PROVIDERS['pluginProviders'])) {
+            foreach ($_PLUGIN_PROVIDERS['pluginProviders'] as $namespace => $options) {
+                $this->app->register($namespace, $options['options'], $options['force']);
             }
         }
-
     }
-
-
     /**
      * Register any application services.
      *

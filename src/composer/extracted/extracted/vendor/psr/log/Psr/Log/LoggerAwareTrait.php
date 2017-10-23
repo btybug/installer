@@ -3,24 +3,15 @@
 namespace Psr\Log;
 
 
-
-
 trait LoggerAwareTrait
 {
 
 
+    protected $logger;
 
 
-
-protected $logger;
-
-
-
-
-
-
-public function setLogger(LoggerInterface $logger)
-{
-$this->logger = $logger;
-}
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 }

@@ -1,34 +1,18 @@
 <?php
 
 
-
-
-
-
 namespace JsonSchema\Uri\Retrievers;
-
-
-
-
-
 
 
 abstract class AbstractRetriever implements UriRetrieverInterface
 {
 
 
+    protected $contentType;
 
 
-
-protected $contentType;
-
-
-
-
-
-
-public function getContentType()
-{
-return $this->contentType;
-}
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
 }

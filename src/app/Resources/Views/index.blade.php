@@ -1,4 +1,3 @@
-
 @extends('cms::layouts.admin')
 @section('content')
 

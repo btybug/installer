@@ -7,6 +7,7 @@
  */
 
 namespace Avatar\Avatar\Http\Controllers;
+
 use Illuminate\Routing\Controller;
 
 class IndexConroller extends Controller

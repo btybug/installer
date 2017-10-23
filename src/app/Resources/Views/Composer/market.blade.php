@@ -4,7 +4,7 @@
     <div class=" col-sm-12 col-md-12">
         <div class="row" style="font-size: 10px">
 
-        @foreach($output['results'] as $package)
+            @foreach($output['results'] as $package)
                 <div class="col-sm-6 col-md-3">
                     <div class="thumbnail">
                         <img src="{!! url('images/plugin.jpg') !!}" alt="plugin">
@@ -14,11 +14,13 @@
                             <p>{!! $package['description'] !!}</p>
                             <p>Downloads:{!! $package['downloads'] !!}</p>
                             <p>Favers:{!! $package['favers'] !!}</p>
-                            <p><a href="{!! url('admin/avatar/composer?p='.$package['name']) !!}" class="btn btn-primary" role="button">Install</a> <a href="#" class="btn btn-default" role="button">Uninstall</a></p>
+                            <p><a href="{!! url('admin/avatar/composer?p='.$package['name']) !!}"
+                                  class="btn btn-primary" role="button">Install</a> <a href="#" class="btn btn-default"
+                                                                                       role="button">Uninstall</a></p>
                         </div>
                     </div>
                 </div>
-        @endforeach
-            </div>
+            @endforeach
+        </div>
     </div>
-    @stop
+@stop

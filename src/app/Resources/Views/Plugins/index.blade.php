@@ -102,7 +102,8 @@
                             <li role="presentation" class="active"><a href="#installed_add_ons"
                                                                       aria-controls="installed_add_ons" role="tab"
                                                                       data-toggle="tab">Installed Plugins</a></li>
-                            <li role="presentation"><a href="#related_add_ons" aria-controls="related_add_ons" role="tab"
+                            <li role="presentation"><a href="#related_add_ons" aria-controls="related_add_ons"
+                                                       role="tab"
                                                        data-toggle="tab">Related Add-Ons</a></li>
                         </ul>
 
@@ -173,13 +174,13 @@
         $(function () {
             $('body').on('click', '.enb-disb', function () {
                 var namespace = $(this).attr('namespace');
-                var action=$(this).attr('data-action');
+                var action = $(this).attr('data-action');
                 $.ajax({
                     url: '{!! route('on_off') !!}',
                     data: {
                         namespace: namespace,
-                        action:action,
-                        _token:  $('input[name=_token]').val()
+                        action: action,
+                        _token: $('input[name=_token]').val()
                     },
                     success: function (data) {
                         location.reload();

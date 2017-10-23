@@ -29,8 +29,8 @@ class MarketController extends Controller
 
         // close curl resource to free up system resources
         curl_close($ch);
-        $output=(json_decode($output,true));
+        $output = (json_decode($output, true));
 //        dd($output);
-        return view('core_avatar::Composer.market',compact('output'));
+        return view('core_avatar::Composer.market', compact('output'));
     }
 }

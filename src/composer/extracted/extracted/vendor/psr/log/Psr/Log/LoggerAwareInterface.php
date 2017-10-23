@@ -3,16 +3,9 @@
 namespace Psr\Log;
 
 
-
-
 interface LoggerAwareInterface
 {
 
 
-
-
-
-
-
-public function setLogger(LoggerInterface $logger);
+    public function setLogger(LoggerInterface $logger);
 }

@@ -9,7 +9,6 @@
 namespace Avatar\Avatar\Repositories;
 
 //TODO replace base_path() with plugins_path()
-use Sahakavatar\Cms\Models\ExtraModules\config;
 use Sahakavatar\Cms\Models\Templates\Units;
 
 /**
@@ -47,17 +46,8 @@ class Plugins
     public function plugins()
     {
         $this->path = base_path(config('avatar.plugins.path') . DS . 'composer.json');
-        $this->dir=config('avatar.plugins.path');
-        $this->type='plugin';
-        $this->separator();
-        return $this;
-    }
-
-    public function modules()
-    {
-        $this->path = base_path('vendor' . DS . 'sahak.avatar' . DS . 'cms' . DS . 'composer.json');
-        $this->dir=config('avatar.modules.path');
-        $this->type='module';
+        $this->dir = config('avatar.plugins.path');
+        $this->type = 'plugin';
         $this->separator();
         return $this;
     }
@@ -89,6 +79,14 @@ class Plugins
         return $plugins;
     }
 
+    public function modules()
+    {
+        $this->path = base_path('vendor' . DS . 'sahak.avatar' . DS . 'cms' . DS . 'composer.json');
+        $this->dir = config('avatar.modules.path');
+        $this->type = 'module';
+        $this->separator();
+        return $this;
+    }
 
     /**
      * @param array $data
@@ -316,7 +314,7 @@ class Plugins
      */
     private function pluginPath($plugin)
     {
-        return base_path($this->dir.DS.'vendor'.DS. $plugin .DS.'composer.json');
+        return base_path($this->dir . DS . 'vendor' . DS . $plugin . DS . 'composer.json');
     }
 
     /**
@@ -333,9 +331,9 @@ class Plugins
         return null;
     }
 
-    public function getPath($path=null)
+    public function getPath($path = null)
     {
-        return base_path($this->dir.DS.$this->name.$path);
+        return base_path($this->dir . DS . $this->name . $path);
     }
 
     public function parent()

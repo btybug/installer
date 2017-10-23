@@ -6,7 +6,6 @@ namespace Avatar\Avatar\Http\Controllers;
 use Avatar\Avatar\Repositories\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sahakavatar\Cms\Models\ExtraModules\config;
 use Symfony\Component\Console\Tests\Input\StringInput;
 
 
@@ -16,13 +15,14 @@ class ComposerController extends Controller
 
     public function __construct()
     {
-        $this->path=config('avatar.pluginsDir');
+        $this->path = config('avatar.pluginsDir');
     }
+
     public function getIndex(Request $request)
     {
-        $plugin=$request->get('p');
-        $path=$this->path;
-        return view('core_avatar::Composer.index',compact('plugin','path'));
+        $plugin = $request->get('p');
+        $path = $this->path;
+        return view('core_avatar::Composer.index', compact('plugin', 'path'));
     }
 
 

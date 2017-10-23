@@ -1,43 +1,12 @@
 <?php
 
 
-
-
-
-
-
-
-
-
-
 namespace Composer\Plugin;
-
-
-
-
-
-
 
 
 interface Capable
 {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public function getCapabilities();
+    public function getCapabilities();
 }

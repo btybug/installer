@@ -6,36 +6,14 @@ interface SchemaStorageInterface
 {
 
 
+    public function addSchema($id, $schema = null);
 
 
+    public function getSchema($id);
 
 
-public function addSchema($id, $schema = null);
+    public function resolveRef($ref);
 
 
-
-
-
-
-
-
-public function getSchema($id);
-
-
-
-
-
-
-
-
-public function resolveRef($ref);
-
-
-
-
-
-
-
-
-public function resolveRefSchema($refSchema);
+    public function resolveRefSchema($refSchema);
 }

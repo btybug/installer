@@ -61,7 +61,7 @@ class RouteServiceProvider extends ServiceProvider
                 'namespace' => $this->namespace,
             ], function ($router) {
                 //TODO fix path when done
-                require __DIR__.'/../../Routes/web.php';
+                require __DIR__ . '/../../Routes/web.php';
             });
         });
     }
