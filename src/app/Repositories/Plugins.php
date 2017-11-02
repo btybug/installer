@@ -51,6 +51,14 @@ class Plugins
         $this->separator();
         return $this;
     }
+    public function appPlugins()
+    {
+        $this->path = base_path(config('avatar.plugins.path') . DS . 'composer.json');
+        $this->dir = config('avatar.plugins.path');
+        $this->type = 'app-plugin';
+        $this->separator();
+        return $this;
+    }
 
     protected function separator()
     {

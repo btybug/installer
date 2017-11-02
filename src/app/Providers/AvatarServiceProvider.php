@@ -34,15 +34,26 @@ class AvatarServiceProvider extends ServiceProvider
                 "is_core" => "yes"
             ]]
         ]);
-        $tabs = ['avatar_packages' => [
-            [
-                'title' => 'Composer',
-                'url' => '/admin/avatar/composer',
-            ], [
-                'title' => 'Market',
-                'url' => '/admin/avatar/market',
+        $tabs = [
+            'avatar_packages' => [
+                [
+                    'title' => 'Composer',
+                    'url' => '/admin/avatar/composer',
+                ], [
+                    'title' => 'Market',
+                    'url' => '/admin/avatar/market',
+                ],
             ],
-        ]];
+            'extra_packages' => [
+                [
+                    'title' => 'Modules',
+                    'url' => '/admin/avatar/extra-packages',
+                ], [
+                    'title' => 'Apps',
+                    'url' => '/admin/avatar/apps',
+                ],
+            ]
+        ];
         \Eventy::action('my.tab', $tabs);
         global $_PLUGIN_PROVIDERS;
 //        dd($_PLUGIN_PROVIDERS);
@@ -52,6 +63,7 @@ class AvatarServiceProvider extends ServiceProvider
             }
         }
     }
+
     /**
      * Register any application services.
      *

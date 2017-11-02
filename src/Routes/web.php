@@ -14,12 +14,18 @@ Route::group(['prefix' => 'composer'], function ($router) {
     Route::post('/main', 'ComposerController@getMain')->name('composer_main');
     Route::post('plugin-on-off', 'ComposerController@getOnOff')->name('on_off');
 });
-Route::group(['prefix' => 'modules'], function ($router) {
+Route::group(['prefix' => 'core-packages'], function ($router) {
     Route::get('/', 'ModulesController@getIndex')->name('modules_index');
     Route::get('/{repository}/{package}/explore', 'ModulesController@getExplore');
 });
-Route::group(['prefix' => 'plugins'], function ($router) {
+
+Route::group(['prefix' => 'extra-packages'], function ($router) {
     Route::get('/', 'PluginsController@getIndex')->name('plugins_index');
+    Route::get('/{repository}/{package}/explore', 'PluginsController@getExplore');
+
+});
+Route::group(['prefix' => 'apps'], function ($router) {
+    Route::get('/', 'PluginsController@getAppsIndex')->name('app_plugins');
     Route::get('/{repository}/{package}/explore', 'PluginsController@getExplore');
 
 });

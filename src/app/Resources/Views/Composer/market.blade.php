@@ -2,8 +2,6 @@
 <!-- Nav tabs -->
 @section('tab')
     <div class=" col-sm-12 col-md-12">
-        <div class="row" style="font-size: 10px">
-
             @foreach($output['results'] as $package)
                 <div class="col-sm-6 col-md-3">
                     <div class="thumbnail">
@@ -21,6 +19,5 @@
                     </div>
                 </div>
             @endforeach
-        </div>
     </div>
 @stop
