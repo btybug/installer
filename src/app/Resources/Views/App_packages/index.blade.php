@@ -1,4 +1,4 @@
-@extends('cms::layouts.mTabs',['index'=>'extra_packages'])
+@extends('btybug::layouts.mTabs',['index'=>'extra_packages'])
 @section('tab')
     <div class="row">
 

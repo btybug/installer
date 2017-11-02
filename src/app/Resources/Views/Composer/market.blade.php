@@ -1,4 +1,4 @@
-@extends('cms::layouts.mTabs',['index'=>'avatar_packages'])
+@extends('btybug::layouts.mTabs',['index'=>'avatar_packages'])
 <!-- Nav tabs -->
 @section('tab')
     <div class=" col-sm-12 col-md-12">

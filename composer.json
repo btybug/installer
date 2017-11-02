@@ -1,5 +1,5 @@
 {
-  "name": "sahak.avatar/avatar",
+  "name": "btybug/installer",
   "description": "plugin system",
   "type": "addon",
   "license": "Apach2",
@@ -19,7 +19,7 @@
     "classmap": [
     ],
     "psr-4": {
-      "Avatar\\Avatar\\": "src/app/"
+      "Btybug\\Installer\\": "src/app/"
     }
   },
   "config":{

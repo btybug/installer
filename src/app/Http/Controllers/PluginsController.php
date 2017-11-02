@@ -6,10 +6,10 @@
  * Time: 2:43 PM
  */
 
-namespace Avatar\Avatar\Http\Controllers;
+namespace Btybug\Installer\Http\Controllers;
 
 
-use Avatar\Avatar\Repositories\Plugins;
+use Btybug\Installer\Repositories\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\Console\Tests\Input\StringInput;

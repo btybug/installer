@@ -6,14 +6,14 @@
  * Time: 9:41 PM
  */
 
-namespace Avatar\Avatar\Repositories;
+namespace Btybug\Installer\Repositories;
 
 //TODO replace base_path() with plugins_path()
 use Sahakavatar\Cms\Models\Templates\Units;
 
 /**
  * Class Plugins
- * @package Avatar\Avatar\Repositories
+ * @package Btybug\Installer\Repositories
  */
 class Plugins
 {
