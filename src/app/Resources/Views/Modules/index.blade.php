@@ -1,4 +1,4 @@
-@extends('btybug::layouts.admin')
+@extends('cms::layouts.admin')
 @section('content')
     <div class="row">
 
@@ -167,7 +167,7 @@
 
 @stop
 @section('CSS')
-    {!! HTML::style('/css/new-store.css') !!}
+    {!! HTML::style('public/css/new-store.css') !!}
 @stop
 @section('JS')
     <script>

@@ -1,4 +1,4 @@
-@extends('btybug::layouts.mTabs',['index'=>'extra_packages'])
+@extends('cms::layouts.mTabs',['index'=>'extra_packages'])
 @section('tab')
     <div class="row">
 
@@ -167,7 +167,7 @@
 
 @stop
 @section('CSS')
-    {!! HTML::style('/css/new-store.css') !!}
+    {!! HTML::style('public/css/new-store.css') !!}
 @stop
 @section('JS')
     <script>

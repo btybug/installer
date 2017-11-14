@@ -1,4 +1,4 @@
-@extends('btybug::layouts.admin')
+@extends('cms::layouts.admin')
 @section('content')
 
 
@@ -36,7 +36,7 @@
 
 @stop
 @section('CSS')
-    {!! HTML::style('/css/backend_layouts_style.css') !!}
+    {!! HTML::style('public/css/backend_layouts_style.css') !!}
     <style>
         .pages.col-md-5 {
             border: 1px solid black;

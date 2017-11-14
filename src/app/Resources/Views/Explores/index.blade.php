@@ -1,4 +1,4 @@
-@extends('btybug::layouts.admin')
+@extends('cms::layouts.admin')
 @section('content')
     <div class="col-md-4 ">
         <div class="panel panel-default">
@@ -160,8 +160,8 @@
 
 @stop
 @section('CSS')
-    {!! HTML::style('css/new-store.css') !!}
-    {!! HTML::style('/js/bootstrap-select/css/bootstrap-select.min.css') !!}
+    {!! HTML::style('public/css/new-store.css') !!}
+    {!! HTML::style('public/js/bootstrap-select/css/bootstrap-select.min.css') !!}
     <style>
         .child-tpl {
             width: 95% !important;
@@ -178,7 +178,7 @@
     </style>
 @stop
 @section('JS')
-    {!! HTML::script('/js/bootstrap-select/js/bootstrap-select.min.js') !!}
+    {!! HTML::script('public/js/bootstrap-select/js/bootstrap-select.min.js') !!}
     <script>
 
 

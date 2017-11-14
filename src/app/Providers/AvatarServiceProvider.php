@@ -1,6 +1,6 @@
 <?php
 
-namespace Btybug\Installer\Providers;
+namespace Avatar\Avatar\Providers;
 
 //use TorMorten\Eventy;
 
@@ -21,19 +21,19 @@ class AvatarServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/Lang', 'core_avatar');
         $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'core_avatar');
-        \Eventy::action('admin.menus', [
-            "title" => "Developer console",
-            "custom-link" => "#",
-            "icon" => "fa fa-folder-open",
-            "is_core" => "yes",
-            "main" => true,
-            "children" => [[
-                "title" => "AVATAR",
-                "custom-link" => '/admin/avatar',
-                "icon" => "fa fa-angle-right",
-                "is_core" => "yes"
-            ]]
-        ]);
+//        \Eventy::action('admin.menus', [
+//            "title" => "Developer console",
+//            "custom-link" => "#",
+//            "icon" => "fa fa-folder-open",
+//            "is_core" => "yes",
+//            "main" => true,
+//            "children" => [[
+//                "title" => "AVATAR",
+//                "custom-link" => '/admin/avatar',
+//                "icon" => "fa fa-angle-right",
+//                "is_core" => "yes"
+//            ]]
+//        ]);
         $tabs = [
             'avatar_packages' => [
                 [
@@ -54,7 +54,7 @@ class AvatarServiceProvider extends ServiceProvider
                 ],
             ]
         ];
-        \Eventy::action('my.tab', $tabs);
+//        \Eventy::action('my.tab', $tabs);
         global $_PLUGIN_PROVIDERS;
 //        dd($_PLUGIN_PROVIDERS);
         if (isset($_PLUGIN_PROVIDERS['pluginProviders'])) {
