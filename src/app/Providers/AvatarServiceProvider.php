@@ -1,6 +1,6 @@
 <?php
 
-namespace Avatar\Avatar\Providers;
+namespace Btybug\Providers;
 
 //use TorMorten\Eventy;
 

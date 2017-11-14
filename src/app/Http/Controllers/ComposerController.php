@@ -1,9 +1,9 @@
 <?php
 
-namespace Avatar\Avatar\Http\Controllers;
+namespace Btybug\Http\Controllers;
 
 
-use Avatar\Avatar\Repositories\Plugins;
+use Btybug\Repositories\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\Console\Tests\Input\StringInput;

@@ -6,7 +6,7 @@
  * Time: 2:11 PM
  */
 
-namespace Avatar\Avatar\Http\Controllers;
+namespace Btybug\Http\Controllers;
 
 
 use Illuminate\Routing\Controller;

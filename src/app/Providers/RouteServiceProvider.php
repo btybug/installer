@@ -1,6 +1,6 @@
 <?php
 
-namespace Avatar\Avatar\Providers;
+namespace Btybug\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Avatar\Avatar\Http\Controllers';
+    protected $namespace = 'Btybug\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.

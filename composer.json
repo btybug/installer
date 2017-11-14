@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "sahak.avatar/console":"dev-master"
+    "btybug/console":"dev-master"
   },
   "require-dev": {
     "composer/composer": "dev-master"
@@ -25,5 +25,5 @@
   "config":{
     "units":["5230135dc425o","58db8f2896666"]
   },
-  "parent":"sahak.avatar/console"
+  "parent":"Btybug/console"
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Avatar\Avatar\illustrator;
+namespace Btybug\illustrator;
 
 /**
  * Created by PhpStorm.
